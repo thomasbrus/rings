@@ -2,7 +2,7 @@ module Rings
   module CommandHandlers
     class GreetCommandHandler < CommandHandler
       extend CommandHandling
-      has_arguments name: /[a-z]+/i, chat_supported: /0|1/, challenge_supported: /0|1/
+      has_arguments name: /[a-z0-9\-_]+/i, chat_supported: /0|1/, challenge_supported: /0|1/
 
       def name
         @name
