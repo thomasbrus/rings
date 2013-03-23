@@ -20,7 +20,7 @@ module Rings
         when Rings::CommandHandlers::JoinCommandHandler.command
           Rings::CommandHandlers::JoinCommandHandler.new(self, *args)
         else
-          raise "Command not supported."
+          raise "Command not supported: #{args.inspect}" if args.count > 1
         end
       end
     end

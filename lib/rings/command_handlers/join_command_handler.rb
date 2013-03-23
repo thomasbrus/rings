@@ -10,11 +10,24 @@ module Rings
 
       def self.command
         'join'
-      end
+      end      
 
       def handle_command
-        puts "Handling join command."
-      end
+        waiting_queue = WaitingQueue.new number_of_players
+
+        # Add the client to the queue
+        waiting_queue.enqueue client
+        client.puts "Now waiting to start a game with #{number_of_players} players."
+
+        if waiting_queue.ready?
+          waiting_queue.each do |player|
+            # Notify each player that the game has begun
+            player.puts "The game has begun ..."
+            # Remove the player from all queues
+            WaitingQueue.withdraw player
+          end
+        end
+      end      
     end
   end
 end

@@ -8,12 +8,12 @@ module Rings
         @name
       end
 
-      def challenge_supported?
-        @challenge_supported == "1"
-      end
-
       def chat_supported?
         @chat_supported == "1"
+      end
+
+      def challenge_supported?
+        @challenge_supported == "1"
       end
 
       def self.command
@@ -25,6 +25,8 @@ module Rings
           client.puts %Q{error "Name '#{name}' is already taken."}
         else
           client.name = name
+          client.chat_supported = chat_supported?
+          client.challenge_supported = challenge_supported?
           client.puts "#{self.class.command} #{server.chat_supported? ? 1 : 0} #{server.challenge_supported? ? 1 : 0}"
         end
       end
