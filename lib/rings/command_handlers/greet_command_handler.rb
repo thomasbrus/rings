@@ -21,7 +21,12 @@ module Rings
       end
 
       def handle_command
-        client.puts "#{self.class.command} #{server.chat_supported? ? 1 : 0} #{server.challenge_supported? ? 1 : 0}"
+        if server.name_taken? name
+          client.puts %Q{error "Name '#{name}' is already taken."}
+        else
+          client.name = name
+          client.puts "#{self.class.command} #{server.chat_supported? ? 1 : 0} #{server.challenge_supported? ? 1 : 0}"
+        end
       end
     end
   end

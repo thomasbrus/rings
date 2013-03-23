@@ -5,14 +5,16 @@ module Rings
     def initialize(server, client)
       @server = server
       @client = client
+      server.add_socket @client
       handle_incoming_commands
+      server.remove_socket @client
     end
 
     private
 
     def handle_incoming_commands
-      while line = client.gets.strip
-        args = line.split(/\s+/)
+      until client.eof?
+        args = client.gets.split(/\s+/)
         case args.shift
         when Rings::CommandHandlers::GreetCommandHandler.command
           Rings::CommandHandlers::GreetCommandHandler.new(self, *args)
