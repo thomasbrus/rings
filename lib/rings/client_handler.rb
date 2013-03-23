@@ -3,11 +3,10 @@ module Rings
     attr_reader :server, :client
 
     def initialize(server, client)
-      @server = server
-      @client = client
-      server.add_socket @client
-      handle_incoming_commands
-      server.remove_socket @client
+      @server, @client = server, client
+      server.with_connected_socket(client) do
+        handle_incoming_commands
+      end
     end
 
     private

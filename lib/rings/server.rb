@@ -10,12 +10,10 @@ module Rings
       super ARGV.first ? ARGV.first.to_i : @port
     end
 
-    def add_socket socket
-      @sockets.push socket
-    end
-
-    def remove_socket socket
-      @sockets.delete socket
+    def with_connected_socket client, &block
+      @sockets.push client
+      yield
+      @sockets.delete client
     end
 
     def name_taken? name
