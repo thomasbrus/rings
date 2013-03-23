@@ -27,7 +27,7 @@ module Rings
             WaitingQueue.withdraw player
           end
         end
-      end      
+      end
     end
   end
 end
