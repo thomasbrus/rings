@@ -3,7 +3,7 @@ require 'forwardable'
 module Rings
   class CommandHandler
     extend Forwardable
-    def_delegators :@client_handler, :server, :client
+    def_delegators :@client_handler, :server, :client_socket
 
     def initialize(client_handler, *args)
       @client_handler = client_handler

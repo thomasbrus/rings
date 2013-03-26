@@ -26,14 +26,14 @@ describe CommandHandlers::GreetCommandHandler do
     context "when name is taken" do
       it "sends an error message" do
         server.stub(:name_taken?).and_return true
-        client.should_receive(:puts).with %q[error "Name 'thomas' is already taken."]
+        client_socket.should_receive(:puts).with %q[error "Name 'thomas' is already taken."]
         described_class.new client_handler, *%w[thomas 1 1]
       end
     end
 
     context "when name is not taken" do
       it "sends a success message" do
-        client.should_receive(:puts).with "greet 1 1"
+        client_socket.should_receive(:puts).with "greet 1 1"
         described_class.new client_handler, *%w[thomas 1 1]
       end
     end

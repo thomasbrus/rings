@@ -3,11 +3,13 @@ require 'rings/command_handlers/join_command_handler'
 
 module Rings
   class ClientHandler
-    attr_reader :server, :client
+    attr_reader :server, :client_socket
 
-    def initialize(server, client)
-      @server, @client = server, client
-      server.with_connected_socket(client) do
+    UnknownCommandError = Class.new(RuntimeError)
+
+    def initialize(server, client_socket)
+      @server, @client_socket = server, client_socket
+      server.with_connected_socket(client_socket) do
         parse_line do |command, args|
           handle_incoming_command command, args
         end
@@ -17,8 +19,8 @@ module Rings
     private
 
     def parse_line &block
-      until client.eof?
-        args = client.gets.split(/\s+/)
+      until client_socket.eof?
+        args = client_socket.gets.split(/\s+/)
         command = args.shift
         block.call command, args
       end
@@ -31,7 +33,7 @@ module Rings
       when CommandHandlers::JoinCommandHandler.command
         CommandHandlers::JoinCommandHandler.new(self, *args)
       else
-        raise "Command not supported: #{args.inspect}" if args.count > 1
+        raise UnknownCommandError, "Command not supported: #{command} #{args.inspect}"
       end
     end
 

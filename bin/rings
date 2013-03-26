@@ -14,9 +14,9 @@ trap('INT') { Kernel.exit(0) }
 loop do
   Thread.abort_on_exception = true
   # Accept any client and set up a client handler
-  Thread.start(server.accept) do |client|
-    client.class.send :extend, Rings::Acts::Client
-    client.class.send :acts_as_client
-    Rings::ClientHandler.new server, client
+  Thread.start(server.accept) do |client_socket|
+    client_socket.class.send :extend, Rings::Acts::Client
+    client_socket.class.send :acts_as_client
+    Rings::ClientHandler.new server, client_socket
   end
 end

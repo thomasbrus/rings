@@ -14,15 +14,15 @@ module Rings
 
       def handle_command
         unless number_of_players.between? Game::MIN_PLAYERS, Game::MAX_PLAYERS # TODO: Use Rules::MIN/MAX_PLAYERS
-          client.puts %q[error "Number of players is invalid."] and return
+          client_socket.puts %q[error "Number of players is invalid."] and return
         end
 
         # Get the queue for a game of #number_of_players players
         waiting_queue = WaitingQueue.instance_for number_of_players
 
         # Add the client to the queue
-        waiting_queue.enqueue client
-        client.puts "Now waiting to start a game with #{number_of_players} players."
+        waiting_queue.enqueue client_socket
+        client_socket.puts "Now waiting to start a game with #{number_of_players} players."
 
         if waiting_queue.ready?
           waiting_queue.each do |player|

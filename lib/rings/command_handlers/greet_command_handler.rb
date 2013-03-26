@@ -13,14 +13,14 @@ module Rings
 
       def handle_command
         if server.name_taken? name
-          client.puts %Q{error "Name '#{name}' is already taken."} and return
+          client_socket.puts %Q{error "Name '#{name}' is already taken."} and return
         end
         
-        client.name = name
-        client.chat_supported = chat_supported?
-        client.challenge_supported = challenge_supported?
+        client_socket.name = name
+        client_socket.chat_supported = chat_supported?
+        client_socket.challenge_supported = challenge_supported?
 
-        client.puts "#{self.class.command} #{server.chat_supported? ? 1 : 0} #{server.challenge_supported? ? 1 : 0}"
+        client_socket.puts "#{self.class.command} #{server.chat_supported? ? 1 : 0} #{server.challenge_supported? ? 1 : 0}"
       end
     end
   end
