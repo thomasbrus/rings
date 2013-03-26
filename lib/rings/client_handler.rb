@@ -5,7 +5,7 @@ module Rings
   class ClientHandler
     attr_reader :server, :client_socket
 
-    UnknownCommandError = Class.new(RuntimeError)
+    class UnknownCommandError < RuntimeError; end
 
     def initialize(server, client_socket)
       @server, @client_socket = server, client_socket
@@ -29,9 +29,9 @@ module Rings
     def handle_incoming_command command, args
       case command
       when CommandHandlers::GreetCommandHandler.command
-        CommandHandlers::GreetCommandHandler.new(self, *args)
+        CommandHandlers::GreetCommandHandler.new(self).handle_command(*args)
       when CommandHandlers::JoinCommandHandler.command
-        CommandHandlers::JoinCommandHandler.new(self, *args)
+        CommandHandlers::JoinCommandHandler.new(self).handle_command(*args)
       else
         raise UnknownCommandError, "Command not supported: #{command} #{args.inspect}"
       end

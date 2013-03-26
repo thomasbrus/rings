@@ -5,8 +5,7 @@ describe Object do
   context "when it acts as client" do
     before(:each) { described_class.send :extend, Acts::Client }
     before(:each) { described_class.send :acts_as_client }
-    let(:instance ) { described_class.new }
-    subject { instance }
+    subject(:instance ) { described_class.new }
     
     it { should respond_to :chat_supported? }
     it { should respond_to :challenge_supported? }

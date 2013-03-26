@@ -18,19 +18,26 @@ describe ClientHandler do
       ClientHandler.new server, client_socket 
     end
 
-    it "handles the greet command" do      
-      client_socket.stub(:gets).and_return("greet")
-      CommandHandlers::GreetCommandHandler.should_receive(:new)
-      ClientHandler.new server, client_socket
+    context "given a valid command" do
+      let(:command_handler) { double :command_handler }
+      before(:each) { command_handler.stub :handle_command }
+
+      it "handles the greet command" do      
+        client_socket.stub(:gets).and_return("greet")
+        CommandHandlers::GreetCommandHandler.should_receive(:new)
+          .and_return(command_handler)
+        ClientHandler.new server, client_socket
+      end
+
+      it "handles the join command" do
+        client_socket.stub(:gets).and_return("join")        
+        CommandHandlers::JoinCommandHandler.should_receive(:new)
+          .and_return(command_handler)
+        ClientHandler.new server, client_socket
+      end
     end
 
-    it "handles the join command" do
-      client_socket.stub(:gets).and_return("join")
-      CommandHandlers::JoinCommandHandler.should_receive(:new)
-      ClientHandler.new server, client_socket
-    end
-
-    context "when an invalid command is given" do
+    context "given an invalid command" do
       before(:each) do
         client_socket.stub(:gets).and_return("unknown_command")
       end

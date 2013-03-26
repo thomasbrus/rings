@@ -4,8 +4,8 @@ module Rings
   class Server < TCPServer
     attr_reader :port
     
-    NameTakenError = Class.new(RuntimeError)
-
+    class NameTakenError < RuntimeError; end
+    
     def initialize port 
       @port = port
       @sockets = []
