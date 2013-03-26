@@ -3,7 +3,7 @@ module Rings
     ALLOWED_COLORS = [:red, :green, :yellow, :purple].freeze
     attr_reader :color
 
-    def initialize color, size
+    def initialize color
       unless ALLOWED_COLORS.include? color
         raise ArgumentError, "Invalid color, allowed colors are #{ALLOWED_COLORS.inspect}"
       end

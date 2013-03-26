@@ -1,7 +1,7 @@
 module Rings
   module CommandHandling
     def has_arguments(options)
-      define_method :argument_options do
+      define_singleton_method :argument_options do
         options
       end
     end

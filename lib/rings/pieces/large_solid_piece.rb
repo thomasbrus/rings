@@ -1,3 +1,5 @@
+require 'rings/piece'
+
 module Rings
   module Pieces
     class LargeSolidPiece < Piece

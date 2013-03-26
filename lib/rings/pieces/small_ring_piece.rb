@@ -1,3 +1,5 @@
+require 'rings/piece'
+
 module Rings
   module Pieces
     class SmallRingPiece < Piece

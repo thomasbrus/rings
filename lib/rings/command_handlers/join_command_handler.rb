@@ -1,19 +1,24 @@
+require 'rings/command_handling'
+require 'rings/command_handler'
+require 'rings/waiting_queue'
+
 module Rings
   module CommandHandlers
     class JoinCommandHandler < CommandHandler
       extend CommandHandling
-      has_arguments number_of_players: /2|3|4/
-
-      def number_of_players
-        @number_of_players.to_i
-      end
+      has_arguments number_of_players: :number
 
       def self.command
         'join'
       end      
 
       def handle_command
-        waiting_queue = WaitingQueue.new number_of_players
+        unless number_of_players.between? Game::MIN_PLAYERS, Game::MAX_PLAYERS # TODO: Use Rules::MIN/MAX_PLAYERS
+          client.puts %q[error "Number of players is invalid."] and return
+        end
+
+        # Get the queue for a game of #number_of_players players
+        waiting_queue = WaitingQueue.instance_for number_of_players
 
         # Add the client to the queue
         waiting_queue.enqueue client

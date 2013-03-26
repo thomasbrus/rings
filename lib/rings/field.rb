@@ -15,7 +15,7 @@ module Rings
     end
 
     def can_place? piece
-      not (has_large_solid_piece? and has_piece_of_size? piece.size)
+      not (has_large_solid_piece? or has_piece_of_size?(piece.size))
     end
 
     def has_piece_of_size? size
@@ -25,11 +25,11 @@ module Rings
     def has_piece_of_color? color
       @pieces.map(&:color).include? color
     end
-
+    
     private
 
     def has_large_solid_piece?
-      @pieces.any? { |piece| piece.solid? and piece.size == :large }
+      @pieces.any? { |piece| piece.solid? && (piece.size == :large) }
     end
   end
 end

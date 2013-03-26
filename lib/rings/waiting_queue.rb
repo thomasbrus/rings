@@ -4,28 +4,33 @@ require 'forwardable'
 module Rings
   class WaitingQueue
     extend Forwardable
-    def_delegators :queue, :clear, :each
-    def_delegator :queue, :delete, :dequeue
-    def_delegator :queue, :add, :enqueue    
+    def_delegators :@items, :each
+    def_delegator :@items, :add, :enqueue    
+    def_delegator :@items, :delete, :dequeue
 
     @@queues = Hash.new
 
-    def initialize size
-      @@queues[size] ||= Set.new
-      @size = size
+    private_class_method :new
+
+    def self.instance_for capacity
+      @@queues[capacity] ||= new capacity
+    end
+
+    def initialize capacity
+      @items = Set.new
+      @capacity = capacity
     end
 
     def self.withdraw item
-      @@queues.values.each { |queue| queue.delete item }
+      @@queues.values.each { |queue| queue.dequeue item }
+    end
+
+    def destroy
+      @@queues.delete @capacity
     end
 
     def ready?
-      queue.size >= @size
-    end
-
-    private 
-    def queue
-      @@queues[@size]
+      @items.size >= @capacity
     end
   end
 end
