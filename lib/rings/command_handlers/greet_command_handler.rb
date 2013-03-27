@@ -5,7 +5,7 @@ module Rings
   module CommandHandlers
     class GreetCommandHandler < CommandHandler
       include CommandHandling
-      has_arguments name: :username, chat_supported?: :switch, challenge_supported?: :switch
+      has_arguments nickname: :string, chat_supported?: :boolean, challenge_supported?: :boolean
 
       def self.command
         'greet'
@@ -14,11 +14,11 @@ module Rings
       def handle_command *args
         args = parse_arguments *args
 
-        if server.name_taken? args[:name]
-          return client_socket.puts %Q[error "Name '#{args[:name]}' is already taken."]
+        if server.nickname_taken? args[:nickname]
+          return client_socket.puts %Q[error "Name '#{args[:nickname]}' is already taken."]
         end
         
-        client_socket.name = args[:name]
+        client_socket.nickname = args[:nickname]
         client_socket.chat_supported = args[:chat_supported?]
         client_socket.challenge_supported = args[:challenge_supported?]
 

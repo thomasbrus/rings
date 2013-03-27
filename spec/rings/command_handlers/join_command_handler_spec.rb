@@ -30,7 +30,6 @@ describe CommandHandlers::JoinCommandHandler do
 
         context "given enough players" do
           it "enqueus the player" do
-            client_socket.stub(:puts)
             WaitingQueue.instance_for(3).should_receive(:enqueue).once
               .with(client_socket)
             subject.handle_command("3")
@@ -41,17 +40,16 @@ describe CommandHandlers::JoinCommandHandler do
             let(:second_client_socket) { double :client_socket }
 
             before(:each) do
-              WaitingQueue.instance_for(3).enqueue first_client_socket
-              WaitingQueue.instance_for(3).enqueue second_client_socket
-              client_socket.stub(:puts)
               first_client_socket.stub(:puts)
               second_client_socket.stub(:puts)
+              WaitingQueue.instance_for(3).enqueue first_client_socket
+              WaitingQueue.instance_for(3).enqueue second_client_socket              
             end
 
             it "withdraws each player from all queues" do
               [first_client_socket, second_client_socket, client_socket].each do |socket|
                 WaitingQueue.should_receive(:withdraw).with(socket).ordered
-              end           
+              end
               subject.handle_command("3")
             end
           end

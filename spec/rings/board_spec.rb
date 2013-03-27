@@ -8,7 +8,7 @@ describe Board do
     let(:board) { Board.new }
 
     describe "#place_starting_pieces" do
-      context "when placed on the board" do
+      # context "when placed on the board" do
         before(:each) do
           @pieces = []
           Rings::Field.any_instance.stub(:place) { |piece| @pieces << piece }
@@ -22,7 +22,7 @@ describe Board do
         it "includes a purple, yellow, green and red ring" do
           @pieces.map(&:color).should =~ [:purple, :yellow, :green, :red]
         end
-      end
+      # end
     end
 
     describe "#can_place?" do
@@ -34,7 +34,6 @@ describe Board do
         end
 
         it "calls #can_place? on the field" do
-          Rings::Field.any_instance.stub(:can_place?).and_return(true)
           Rings::Field.any_instance.should_receive(:can_place?).with(piece)
           board.can_place?(1, 1, piece)
         end

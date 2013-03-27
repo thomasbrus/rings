@@ -11,8 +11,8 @@ describe CommandHandlers::GreetCommandHandler do
 
     describe "#handle_command" do
       context "given valid arguments" do
-        context "when the name is taken" do
-          before(:each) { server.stub(:name_taken?).and_return(true) }
+        context "when the nickname is taken" do
+          before(:each) { server.stub(:nickname_taken?).and_return(true) }
 
           it "sends an error message" do
             client_socket.should_receive(:puts)
@@ -21,26 +21,24 @@ describe CommandHandlers::GreetCommandHandler do
           end
         end
 
-        context "when the name is not taken" do
-          it "stores the name of the client" do
-            client_socket.stub(:puts)
-            client_socket.should_receive(:name=).with("thomas")
+        context "when the nickname is not taken" do
+          it "stores the nickname of the client" do
+            client_socket.should_receive(:nickname=).with("thomas")
             subject.handle_command(*%w[thomas 1 1])            
           end
 
           it "stores whether the client supports chat functionality" do
-            client_socket.stub(:puts)
             client_socket.should_receive(:chat_supported=).with(true)
             subject.handle_command(*%w[thomas 1 1])
           end
 
           it "stores whether the client supports challenge functionality" do
-            client_socket.stub(:puts)
             client_socket.should_receive(:challenge_supported=).with(true)
             subject.handle_command(*%w[thomas 1 1])
           end
 
           it "send a response message" do
+            client_socket.unstub(:puts)
             client_socket.should_receive(:puts)
               .with(%q[greet 1 1])
             subject.handle_command(*%w[thomas 1 1])

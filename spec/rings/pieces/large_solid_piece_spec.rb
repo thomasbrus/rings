@@ -3,8 +3,17 @@ require 'rings/pieces/large_solid_piece'
 require 'support/shared_examples_for_piece'
 
 describe Pieces::LargeSolidPiece do
-  it_behaves_like Piece
-  subject { described_class.new :yellow }
-  it { should be_solid }
-  its(:size) { should == :large }
+  it_behaves_like Piece do
+    describe "#solid?" do
+      specify { subject.solid?.should be_true }
+    end
+
+    describe "#size" do
+      specify { subject.size.should == :large }  
+    end
+
+    describe "#kind" do
+      specify { subject.kind.should == :large_solid_piece }
+    end
+  end
 end

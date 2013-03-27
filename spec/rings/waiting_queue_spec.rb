@@ -4,6 +4,8 @@ require 'rings/waiting_queue'
 describe WaitingQueue do
   specify { described_class.should_not respond_to :new }
 
+  # TODO: describe "#items"
+
   describe "#ready?" do
     context "when the capacity of the queue is zero" do
       subject { WaitingQueue.instance_for 0 }

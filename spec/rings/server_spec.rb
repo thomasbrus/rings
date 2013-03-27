@@ -18,6 +18,8 @@ describe Server do
   before(:each) do
     first_client.stub(:name).and_return('First client')
     second_client.stub(:name).and_return('Second client')
+    first_client.stub(:close)
+    second_client.stub(:close)
   end
 
   describe "#with_connected_socket" do  
@@ -28,31 +30,36 @@ describe Server do
         block.should_receive(:call)
         server.with_connected_socket first_client, &block
       end
-    end
 
-    context "when the name is taken" do
-      before(:each) do
-        server.stub(:name_taken?).and_return(true)
+      it "closes the client socket" do
+        first_client.should_receive(:close)
+        server.with_connected_socket(first_client) {}
       end
 
-      it "raises an error" do
-        expect {
-          server.with_connected_socket(first_client) {}
-        }.to raise_error Server::NameTakenError
+      context "when the name is taken" do
+        before(:each) do
+          server.stub(:nickname_taken?).and_return(true)
+        end
+
+        it "raises an error" do
+          expect {
+            server.with_connected_socket(first_client) {}
+          }.to raise_error Server::NickNameTakenError
+        end
       end
     end
   end
 
-  describe "#name_taken?" do
+  describe "#nickname_taken?" do
     context "when checking if a name is taken" do
       context "when no sockets are connected" do
-        specify { server.name_taken?('Some client').should be_false }
+        specify { server.nickname_taken?('Some client').should be_false }
       end
 
       context "when a socket with that name is connected" do
         specify do
           server.with_connected_socket first_client do
-            server.name_taken?('First client').should be_true
+            server.nickname_taken?('First client').should be_true
           end
         end
       end
@@ -60,7 +67,7 @@ describe Server do
       context "after the socket with that name was connected" do
         specify do
           server.with_connected_socket(first_client) {}
-          server.name_taken?('First client').should be_false
+          server.nickname_taken?('First client').should be_false
         end          
       end
     end

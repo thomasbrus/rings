@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'rings/command_handling'
 require 'rings/client_handler'
 
 describe ClientHandler do
@@ -42,10 +43,19 @@ describe ClientHandler do
         client_socket.stub(:gets).and_return("unknown_command")
       end
       
-      it "throws an error" do
-        expect { ClientHandler.new server, client_socket
-        }.to raise_error ClientHandler::UnknownCommandError
-      end  
-    end    
+      it "sends the error message to the client" do
+        client_socket.should_receive(:puts)
+          .with(/Command not supported: unknown_command/)
+        server.stub(:puts)
+        ClientHandler.new server, client_socket
+      end
+
+      it "sends the error message to the server" do
+        client_socket.stub(:puts)
+        server.should_receive(:puts)
+          .with(/Command not supported: unknown_command/)
+        ClientHandler.new server, client_socket
+      end
+    end
   end
 end

@@ -18,5 +18,8 @@ module Rings
       raise NotImplementedError, "Sub class must implemented this method"
     end
 
+    def kind
+      [size, solid? ? 'solid' : 'ring', "piece"].join('_').to_sym
+    end
   end
 end

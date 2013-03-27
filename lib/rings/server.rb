@@ -1,10 +1,14 @@
 require 'socket'
+require 'forwardable'
 
 module Rings
   class Server < TCPServer
     attr_reader :port
     
-    class NameTakenError < RuntimeError; end
+    extend Forwardable
+    def_delegators :STDOUT, :puts
+    
+    class NickNameTakenError < RuntimeError; end
     
     def initialize port 
       @port = port
@@ -12,14 +16,15 @@ module Rings
       super @port
     end
 
-    def with_connected_socket client, &block
-      raise NameTakenError, "Name already taken" if name_taken? client.name
-      @sockets.push client
+    def with_connected_socket client_socket, &block
+      raise NickNameTakenError, "Name already taken" if nickname_taken? client_socket.name
+      @sockets.push client_socket
       yield
-      @sockets.delete client
+      @sockets.delete client_socket
+      client_socket.close
     end
 
-    def name_taken? name
+    def nickname_taken? name
       @sockets.map(&:name).include? name
     end
 

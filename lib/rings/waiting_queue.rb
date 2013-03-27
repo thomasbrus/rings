@@ -5,7 +5,6 @@ module Rings
   class WaitingQueue
     extend Forwardable
     def_delegators :@items, :each
-    def_delegator :@items, :add, :enqueue    
     def_delegator :@items, :delete, :dequeue
 
     @@queues = Hash.new
@@ -17,12 +16,20 @@ module Rings
     end
 
     def initialize capacity
-      @items = Set.new
+      @items = Array.new
       @capacity = capacity
     end
 
     def self.withdraw item
       @@queues.values.each { |queue| queue.dequeue item }
+    end
+
+    def enqueue item
+      @items.push(item) unless @items.include? item
+    end
+
+    def items
+      @items.dup
     end
 
     def destroy

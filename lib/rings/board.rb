@@ -7,6 +7,8 @@ require 'rings/pieces/large_solid_piece'
 require 'rings/pieces/medium_ring_piece'
 require 'rings/pieces/small_ring_piece'
 
+include Rings::Pieces
+
 module Rings
   class Board
     SIZE = 5
