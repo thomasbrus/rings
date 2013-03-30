@@ -9,3 +9,5 @@ group :development do
   gem 'guard-rspec'
   gem 'rb-fsevent', '~> 0.9'
 end
+
+gem 'state_machine', '~> 1.1.2'
