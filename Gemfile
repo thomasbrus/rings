@@ -10,4 +10,4 @@ group :development do
   gem 'rb-fsevent', '~> 0.9'
 end
 
-gem 'state_machine', '~> 1.1.2'
+gem 'state_machine', '~> 1.1.2', :require => 'state_machine/core'

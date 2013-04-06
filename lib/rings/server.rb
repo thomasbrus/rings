@@ -10,22 +10,20 @@ module Rings
     
     class NickNameTakenError < RuntimeError; end
     
-    def initialize port 
+    def initialize port
+      super port
       @port = port
-      @sockets = []
-      super @port
+      @connected_clients = []
     end
 
     def with_connected_socket client_socket, &block
-      raise NickNameTakenError, "Name already taken" if nickname_taken? client_socket.name
-      @sockets.push client_socket
+      @connected_clients.push client_socket
       yield
-      @sockets.delete client_socket
-      client_socket.close
+      @connected_clients.delete client_socket
     end
 
     def nickname_taken? name
-      @sockets.map(&:name).include? name
+      @connected_clients.map(&:name).include? name
     end
 
     def chat_supported?
@@ -33,7 +31,7 @@ module Rings
     end
 
     def challenge_supported?
-      true
+      false
     end
 
   end

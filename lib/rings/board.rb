@@ -17,12 +17,12 @@ module Rings
       @fields = Matrix.build(SIZE, SIZE) { |x, y| Field.new x, y }
     end
 
-    def place x, y, piece
+    def place piece, x, y
       raise ArgumentError, "Cannot place this piece here." unless can_place?(x, y, piece)
       @fields[x, y].place piece
     end
 
-    def can_place? x, y, piece
+    def can_place? piece, x, y
       return (0...SIZE).include?(x) && (0...SIZE).include?(y) && @fields[x, y].can_place?(piece)
       # if piece.solid?
       #   return false if has_adjacent_solid_piece_of_color?(x, y, piece.color)

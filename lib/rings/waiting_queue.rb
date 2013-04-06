@@ -7,7 +7,7 @@ module Rings
     def_delegators :@items, :each
     def_delegator :@items, :delete, :dequeue
 
-    @@queues = Hash.new
+    @@queues = {}
 
     private_class_method :new
 
@@ -16,7 +16,7 @@ module Rings
     end
 
     def initialize capacity
-      @items = Array.new
+      @items = []
       @capacity = capacity
     end
 

@@ -1,3 +1,5 @@
+require 'uri'
+
 module Rings
   module Acts
     module Client
@@ -25,6 +27,11 @@ module Rings
 
         def in_game?
           !game.nil?
+        end
+
+        def send_command command, *args
+          encoded_args = args.map { |arg| URI.encode(arg) }
+          puts [command, *encoded_args].map.join(' ')
         end
       end
     end
