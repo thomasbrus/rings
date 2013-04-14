@@ -19,7 +19,7 @@ describe Field do
           field.stub(:can_place?).and_return(false)
         end
 
-        it "throws an error" do
+        it "raises an error" do
           expect { field.place piece }.to raise_error ArgumentError
         end
       end

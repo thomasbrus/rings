@@ -41,7 +41,7 @@ describe Board do
           board.stub(:can_place?).and_return(false)
         end
 
-        it "throws an error" do
+        it "raises an error" do
           expect { board.place piece, 2, 3 }.to raise_error ArgumentError
         end
       end

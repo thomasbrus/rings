@@ -10,6 +10,8 @@ module Rings
 
     private_class_method :new
 
+    class CapacityReachedError < RuntimeError; end
+
     def self.instance_for capacity
       @@queues[capacity] ||= new capacity
     end
@@ -25,18 +27,13 @@ module Rings
 
     def enqueue item
       unless @items.include? item
-        # raise SomeError, "Cannot enqueue another item, capacity is reached" if ready?
+        raise CapacityReachedError, "Cannot enqueue another item, capacity is reached" if ready?
         @items.push(item)
       end
     end
 
     def to_a
       @items.dup
-    end
-
-    # TODO: remove
-    def destroy
-      @@queues.delete @capacity
     end
 
     def ready?

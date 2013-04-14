@@ -7,7 +7,7 @@ describe CommandHandling do
 
   describe ".has_arguments" do
     context "given invalid argument options" do
-      it "throws an error" do
+      it "raises an error" do
         expect {
           subject.class.send :has_arguments, arg: :something
         }.to raise_error CommandHandling::CommandError, /invalid argument options/i
@@ -42,7 +42,7 @@ describe CommandHandling do
 
       describe "#parse_arguments" do
         context "given too few arguments" do
-          it "throws an error" do
+          it "raises an error" do
             expect {
               subject.parse_arguments ["thomas"]
             }.to raise_error CommandHandling::CommandError, /wrong number of arguments/i
@@ -50,7 +50,7 @@ describe CommandHandling do
         end
 
         context "given too many arguments" do
-          it "throws an error" do
+          it "raises an error" do
             expect {
               subject.parse_arguments %w[thomas 21 0 Enschede]
             }.to raise_error CommandHandling::CommandError, /wrong number of arguments/i
@@ -58,7 +58,7 @@ describe CommandHandling do
         end
 
         context "given incorrectly formatted arguments" do
-          it "throws an error" do
+          it "raises an error" do
             expect {            
               subject.parse_arguments ["thomas", "-21", "4"]
             }.to raise_error CommandHandling::CommandError, /could not parse/i

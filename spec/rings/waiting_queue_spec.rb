@@ -64,6 +64,22 @@ describe WaitingQueue do
         subject.to_a.should == [first_item, second_item, third_item]
       end
     end
+
+    context "when the capacity is exceeded" do
+      subject { WaitingQueue.instance_for 2 }
+
+      before(:each) do
+        subject.enqueue first_item
+        subject.enqueue second_item
+      end
+
+      it "raises an error" do
+        error = WaitingQueue::CapacityReachedError
+        message = /cannot enqueue another item/i
+        expect { subject.enqueue third_item }.to raise_error error, message      
+      end
+    end
+
   end
 
   describe "#to_a" do
@@ -95,17 +111,6 @@ describe WaitingQueue do
         before(:each) do
           subject.enqueue first_item
           subject.enqueue second_item
-        end
-
-        it { should be_ready }
-      end
-
-      # TODO: Raise error and move to #enqueue test ?
-      context "when the capacity is exceeded" do
-        before(:each) do
-          subject.enqueue first_item
-          subject.enqueue second_item
-          subject.enqueue third_item
         end
 
         it { should be_ready }
