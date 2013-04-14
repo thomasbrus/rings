@@ -18,42 +18,34 @@ module Rings
     end
 
     def place piece, x, y
-      raise ArgumentError, "Cannot place this piece here." unless can_place?(x, y, piece)
+      raise ArgumentError, "Cannot place this piece here." unless can_place? piece, x, y
       @fields[x, y].place piece
     end
 
     def can_place? piece, x, y
       return (0...SIZE).include?(x) && (0...SIZE).include?(y) && @fields[x, y].can_place?(piece)
-      # if piece.solid?
-      #   return false if has_adjacent_solid_piece_of_color?(x, y, piece.color)
-      # else
-      #   return has_adjacent_piece_of_color?(x, y, piece.color) || @fields[x, y].has_piece_of_color?(x ,y, piece.color)
-      # end
     end
 
-    def place_starting_pieces x, y
-      @fields[x, y].place LargeRingPiece.new :purple
-      @fields[x, y].place MediumRingPiece.new :yellow
-      @fields[x, y].place SmallRingPiece.new :green
-      @fields[x, y].place ExtraSmallSolidPiece.new :red
+    def has_piece_of_color? color, x, y
+      @fields[x, y].has_piece_of_color? piece.color
     end
 
-    # private
+    def has_adjacent_solid_piece_of_color? color, x, y
+      adjacent_pieces(x, y).any? { |f| f.has_solid_piece_of_color? color }
+    end
 
-    # def adjacent_pieces x, y
-    #   @fields.each.select do |field|
-    #     horizontal_distance = (x - field.x).abs
-    #     vertical_distance = (y - field.y).abs
-    #     horizontal_distance + vertical_distance == 1
-    #   end
-    # end
+    def has_adjacent_piece_of_color? color, x, y
+      adjacent_pieces(x, y).any? { |f| f.has_piece_of_color? color }
+    end
 
-    # def has_adjacent_solid_piece_of_color? x, y, color
-    #   adjacent_pieces(x, y).any? { |f| f.has_solid_piece_of_color? color }
-    # end
+    private
 
-    # def has_adjacent_piece_of_color? x, y, color
-    #   adjacent_pieces(x, y).any? { |f| f.has_piece_of_color? color }
-    # end
+    def adjacent_pieces x, y
+      @fields.each.select do |field|
+        horizontal_distance = (x - field.x).abs
+        vertical_distance = (y - field.y).abs
+        horizontal_distance + vertical_distance == 1
+      end
+    end
   end
 end

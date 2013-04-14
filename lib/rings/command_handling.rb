@@ -18,25 +18,23 @@ module Rings
         end
 
         define_singleton_method(:argument_options) { options }
-        private_class_method(:argument_options)
-
         send :include, InstanceMethods
       end
     end
   
     module InstanceMethods
       def arguments(key)
-        (@parsed_arguments || {}).key(key)
+        (@parsed_arguments || {})[key]
       end
 
-      def parse_arguments(*args)
+      def parse_arguments arguments
         options = self.class.argument_options
         
-        unless args.count == options.count
-          raise CommandError, sprintf("Wrong number of arguments (%d for %d)", args.count, options.count)
+        unless arguments.count == options.count
+          raise CommandError, "Wrong number of arguments."
         end
         
-        parsed_values = options.values.zip(options.keys, args).map do |type, key, value|
+        parsed_values = options.values.zip(options.keys, arguments).map do |type, key, value|
           if (match_data = value.match(regex_by_argument_type(type))).nil? || value != match_data.to_s
             raise CommandError, "Could not parse argument " + "(#{value} for #{key.inspect})"
           end

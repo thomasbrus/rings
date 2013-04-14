@@ -7,9 +7,7 @@ module Rings
     
     extend Forwardable
     def_delegators :STDOUT, :puts
-    
-    class NickNameTakenError < RuntimeError; end
-    
+        
     def initialize port
       super port
       @port = port

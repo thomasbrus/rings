@@ -12,8 +12,8 @@ describe Pieces::LargeRingPiece do
       specify { subject.size.should == :large }  
     end
 
-    describe "#kind" do
-      specify { subject.kind.should == :large_ring_piece }
+    describe "#type" do
+      specify { subject.type.should == :large_ring_piece }
     end
   end
 end

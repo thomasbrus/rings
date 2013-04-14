@@ -12,8 +12,8 @@ describe Pieces::LargeSolidPiece do
       specify { subject.size.should == :large }  
     end
 
-    describe "#kind" do
-      specify { subject.kind.should == :large_solid_piece }
+    describe "#type" do
+      specify { subject.type.should == :large_solid_piece }
     end
   end
 end

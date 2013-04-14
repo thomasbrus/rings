@@ -1,7 +1,7 @@
 shared_examples_for CommandHandler do
   let(:server) { double :server }
   let(:client_socket) { double :client_socket }
-  let(:client_handler) { double :client_handler }
+  let(:session) { double :session }
 
   before(:each) do
     server.stub(:nickname_taken?).and_return(false)
@@ -14,10 +14,9 @@ shared_examples_for CommandHandler do
     client_socket.stub(:challenge_supported=)
     client_socket.stub(:puts)
     
-    client_handler.stub(:server) { server }
-    client_handler.stub(:client_socket) { client_socket }
+    session.stub(:server) { server }
+    session.stub(:client_socket) { client_socket }
   end
   
-  subject { described_class.new client_handler }
   specify { described_class.should respond_to :command }
 end

@@ -12,8 +12,8 @@ describe Pieces::SmallRingPiece do
       specify { subject.size.should == :small }  
     end
 
-    describe "#kind" do
-      specify { subject.kind.should == :small_ring_piece }
+    describe "#type" do
+      specify { subject.type.should == :small_ring_piece }
     end
   end
 end

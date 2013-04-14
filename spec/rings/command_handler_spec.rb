@@ -7,7 +7,7 @@ describe CommandHandler do
 
   describe ".command" do
     specify do
-      expect { described_class.command }.to raise_error NotImplementedError
+      expect { CommandHandler.command }.to raise_error NotImplementedError
     end
   end
 end

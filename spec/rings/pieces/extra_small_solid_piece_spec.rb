@@ -12,8 +12,8 @@ describe Pieces::ExtraSmallSolidPiece do
       specify { subject.size.should == :extra_small }  
     end
 
-    describe "#kind" do
-      specify { subject.kind.should == :extra_small_solid_piece }
+    describe "#type" do
+      specify { subject.type.should == :extra_small_solid_piece }
     end
   end
 end

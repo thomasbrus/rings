@@ -10,7 +10,7 @@ module Rings
 
       def initialize(session, *args)
         super session
-        parse_arguments *args
+        parse_arguments args
       end
 
       def self.command
@@ -25,35 +25,25 @@ module Rings
         end
 
         if @session.request_game
-          waiting_queue = add_to_queue(number_of_players)
+          waiting_queue = WaitingQueue.instance_for capacity
+          waiting_queue.enqueue item
 
-          if waiting_queue.ready? && @session.start_game
-            setup_game waiting_queue
+          if waiting_queue.ready? && waiting_queue.to_a.all?(&:start_game!)
+            setup_game waiting_queue.to_a.map(&:client_socket)
+            waiting_queue.each { |session| WaitingQueue.withdraw session }
           end
         end
       end
 
       private
 
-      def add_to_waiting_queue capacity
-        waiting_queue = WaitingQueue.instance_for capacity
-        waiting_queue.enqueue client_socket
-      end
-
-      def setup_game
-        game = Game.new waiting_queue.items
-        client_socket.game = game
+      def setup_game players
+        game = Game.new players
         x, y = game.place_starting_pieces
 
-        waiting_queue.each do |player|
-          WaitingQueue.withdraw player
-          notify_player player, game, x, y          
-        end
-      end
-
-      def notify_player player, game, x, y
-        game.players.each do |player|
-          player.send_command command, *game.players, x, y
+        players.each do |player|
+          player.game = game
+          player.send_command start_game_command(players.count), *players.map(&:nickname), x, y
         end
       end
 
@@ -62,6 +52,7 @@ module Rings
         when 2 then :start_two_player_game
         when 3 then :start_three_player_game
         when 4 then :start_four_player_game 
+        end
       end
     end
   end

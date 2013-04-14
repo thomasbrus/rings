@@ -1,8 +1,8 @@
 require 'rings/command_handling'
-require 'rings/command_handlers/greet_command_handler'
-require 'rings/command_handlers/join_command_handler'
-require 'rings/command_handlers/place_command_handler'
-require 'rings/command_handlers/chat_command_handler'
+require 'rings/command_handlers/join_server_command_handler'
+require 'rings/command_handlers/request_game_command_handler'
+require 'rings/command_handlers/place_piece_command_handler'
+require 'rings/command_handlers/send_message_command_handler'
 
 require 'state_machine/core'
 
@@ -11,7 +11,7 @@ module Rings
     attr_reader :server, :client_socket
     extend StateMachine::MacroMethods
 
-    state_machine :state, initial: :connected do
+    state_machine initial: :connected do
       after_failure(on: :join_server, unless: :connected?) do |session|
         message = "Join command not allowed. "
         message << "It's not allowed to join twice."
@@ -20,20 +20,20 @@ module Rings
 
       after_failure(on: :request_game, unless: :joined_server?) do |session|
         message = "Request game command not allowed. "
-        message << "It's not allowed to request a game before joining the server or when already in game."
+        message << "It's not allowed to request a game "
+        message << "before joining the server or when already in game."
         session.client_socket.send_command :error, message
-        throw :halt
       end
 
-      after_failure(on: :send_chat_message, unless: :in_game?) do |session|
+      after_failure(on: :send_message, unless: :in_game?) do |session|
         message = "Chat command not allowed. "
         message << "It's only allowed to send chat messages while in game."
         session.client_socket.send_command :error, message
       end
 
       after_failure(on: :place_piece, unless: :in_game?) do |session|
-        message = "Place command not allowed. "
-        message << "It's only allowed to place rings while in game."
+        message = "Place piece command not allowed. "
+        message << "It's only allowed to place pieces while in game."
         session.client_socket.send_command :error, message
       end
 
@@ -49,7 +49,7 @@ module Rings
         transition :joined_server => :in_game
       end
 
-      event :send_chat_message do
+      event :send_message do
         transition :in_game => :in_game
       end
 
@@ -67,7 +67,9 @@ module Rings
       @client_socket = client_socket
 
       server.with_connected_client(client_socket) do
-        client_socket.each_line(&:parse_line)
+        until client_socket.eof?
+          parse_line client_socket.gets
+        end
       end
 
       initialize_state_machines
@@ -85,17 +87,17 @@ module Rings
     end
 
     def command_handlers
-      [ CommandHandlers::JoinServerCommandHandler
-      , CommandHandlers::RequestGameCommandHandler
-      , CommandHandlers::PlaceRingCommandHandler
-      , CommandHandlers::SendChatMessageCommandHandler ]
+      [ CommandHandlers::JoinServerCommandHandler,
+        CommandHandlers::RequestGameCommandHandler,
+        CommandHandlers::PlacePieceCommandHandler,
+        CommandHandlers::SendMessageCommandHandler ]
     end
 
     def handle_incoming_command command, arguments
       fail = ->{ raise CommandHandling::CommandError, "Unknown command: #{command}" }
       
-      command_handler_klass = command_handlers.find(fail) do |chk|
-        chk.command == command
+      command_handler_klass = command_handlers.find(fail) do |command_handler_klass|
+        command_handler_klass.command == command
       end
 
       command_handler_klass.new(self, *arguments).handle_command

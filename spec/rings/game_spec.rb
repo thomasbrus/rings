@@ -1,17 +1,31 @@
-require 'spec_helper'
-require 'rings/game'
+# require 'spec_helper'
+# require 'rings/game'
 
-describe Game do
-  describe ".new" do
-    let(:board) { double :board }
+# describe Game do
+#   let (:game) { Game.new [] }
+
+#   describe "#place_piece" do
     
-    it "places the starting pieces" do    
-      Board.any_instance.should_receive(:place_starting_pieces).once do |x, y|
-        x.should be_between 1, 3
-        y.should be_between 1, 3
-      end
-      Game.new []
-    end
-  end
+#   end
 
-end
+#   describe "#place_starting_pieces" do
+#     it "chooses a random field within a valid range" do
+#       Board.any_instance.should_receive(:place_starting_pieces).once do |x, y|
+#         x.should be_between 1, 3
+#         y.should be_between 1, 3
+#       end
+#       game.place_starting_pieces      
+#     end
+
+#     it "returns the x and y coordinates of the starting pieces" do
+#       x, y = game.place_starting_pieces
+#       x.should be_between 1, 3
+#       y.should be_between 1, 3
+#     end
+
+
+#   end
+
+
+
+# end

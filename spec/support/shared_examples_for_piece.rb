@@ -1,11 +1,13 @@
-shared_examples_for Piece do
+require 'rings/piece'
+
+shared_examples_for Rings::Piece do
   subject { described_class.new :green }
 
   describe ".new" do
     context "given a valid color" do
       it "can create the piece" do
         expect {
-          described_class.new Piece::ALLOWED_COLORS.first
+          described_class.new :yellow
         }.to_not raise_error ArgumentError
       end
     end

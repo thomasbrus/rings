@@ -10,7 +10,7 @@ module Rings
 
       def initialize(session, *args)
         super session
-        parse_arguments *args
+        parse_arguments args
       end
 
       def self.command

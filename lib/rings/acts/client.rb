@@ -31,7 +31,7 @@ module Rings
 
         def send_command command, *args
           encoded_args = args.map { |arg| URI.encode(arg) }
-          puts [command, *encoded_args].map.join(' ')
+          puts [command, *encoded_args].join(' ')
         end
       end
     end

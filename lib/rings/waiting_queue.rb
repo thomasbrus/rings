@@ -1,4 +1,3 @@
-require 'set'
 require 'forwardable'
 
 module Rings
@@ -25,13 +24,17 @@ module Rings
     end
 
     def enqueue item
-      @items.push(item) unless @items.include? item
+      unless @items.include? item
+        # raise SomeError, "Cannot enqueue another item, capacity is reached" if ready?
+        @items.push(item)
+      end
     end
 
-    def items
+    def to_a
       @items.dup
     end
 
+    # TODO: remove
     def destroy
       @@queues.delete @capacity
     end

@@ -1,19 +1,17 @@
 #!/usr/bin/env ruby
 
 require 'rings'
-require 'rings/client_handler'
+require 'rings/session'
 require 'rings/acts/client'
 
-# Start the server
 server = Rings::Server.new(ARGV.first ? ARGV.first.to_i : 4567)
 server.puts "Rings Server started on port #{server.port}."
 
-# Gracefully exit with ctrl-c
+# Exit gracefully using ctrl-c
 trap('INT') { Kernel.exit(0) }
 
 loop do
   Thread.abort_on_exception = true
-  # Accept any client and set up a client handler
   Thread.start(server.accept) do |client_socket|
     client_socket.class.send :include, Rings::Acts::Client
     client_socket.class.send :acts_as_client

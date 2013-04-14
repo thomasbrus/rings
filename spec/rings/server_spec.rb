@@ -4,22 +4,19 @@ require 'support/mock_block'
 # Override the initialize method so that it doesn't actually start a tcp server
 Server.send(:define_method, :initialize) do |port|
   @port = port
-  @sockets = []
+  @connected_clients = []
 end
 
 describe Server do
-  subject(:server) { described_class.new 4567 }
+  subject(:server) { Server.new 4567 }
 
   let(:first_client) { double :client }
   let(:second_client) { double :client }
-
   its(:port) { subject.port.should == 4567 }
 
   before(:each) do
     first_client.stub(:name).and_return('First client')
     second_client.stub(:name).and_return('Second client')
-    first_client.stub(:close)
-    second_client.stub(:close)
   end
 
   describe "#with_connected_socket" do  
@@ -29,23 +26,6 @@ describe Server do
       it "yields the block" do
         block.should_receive(:call)
         server.with_connected_socket first_client, &block
-      end
-
-      it "closes the client socket" do
-        first_client.should_receive(:close)
-        server.with_connected_socket(first_client) {}
-      end
-
-      context "when the name is taken" do
-        before(:each) do
-          server.stub(:nickname_taken?).and_return(true)
-        end
-
-        it "raises an error" do
-          expect {
-            server.with_connected_socket(first_client) {}
-          }.to raise_error Server::NickNameTakenError
-        end
       end
     end
   end
@@ -78,6 +58,6 @@ describe Server do
   end
 
   describe "#challenge_supported?" do
-    specify { expect(subject.challenge_supported?).to be_true }
+    specify { expect(subject.challenge_supported?).to be_false }
   end
 end
