@@ -9,7 +9,7 @@ describe Session do
 
   before(:each) do
     client_socket.stub(:eof?).and_return(true)
-    server.stub(:with_connected_client) { |&block| block.call }
+    server.stub(:with_connected_socket) { |&block| block.call }
   end
 
   describe ".new" do
@@ -85,20 +85,8 @@ describe Session do
       context "when performing the 'join server' event" do
         before(:each) { session.join_server! }
 
-        it "is now in the 'joined server' state" do
+        it "transitions to the 'joined server' state" do
           session.state_name.should == :joined_server
-        end
-      end
-    end
-
-    context "when not in the 'connected' state" do
-      before(:each) { session.join_server! }
-
-      context "when performing the 'join server' event" do
-        it "sends an error message" do
-          message = /join command not allowed/i
-          client_socket.should_receive(:send_command).with(:error, message)
-          session.join_server
         end
       end
     end
@@ -115,18 +103,8 @@ describe Session do
       context "when performing the 'request game' event" do
         before(:each) { session.request_game! }
 
-        it "is still in the 'joined server' state" do
+        it "stays in the 'joined server' state" do
           session.state_name.should == :joined_server
-        end
-      end
-    end
-
-    context "when not in the 'joined server' state" do
-      context "when performing the 'request_game' event" do
-        it "sends an error message" do
-          message = /request game command not allowed/i
-          client_socket.should_receive(:send_command).with(:error, message)
-          session.request_game
         end
       end
     end
@@ -143,7 +121,7 @@ describe Session do
       context "when performing the 'start game' event" do
         before(:each) { session.start_game! }
 
-        it "is now in the 'in game' state" do
+        it "transitions to the 'in game' state" do
           session.state_name.should == :in_game
         end
       end
@@ -164,18 +142,8 @@ describe Session do
       context "when performing the 'send message' event" do
         before(:each) { session.send_message! }
 
-        it "is still in the 'in game' state" do
+        it "stays in the 'in game' state" do
           session.state_name.should == :in_game
-        end
-      end
-    end
-
-    context "when not in the 'in game' state" do
-      context "when performing the 'send_message' event" do
-        it "sends an error message" do
-          message = /chat command not allowed/i
-          client_socket.should_receive(:send_command).with(:error, message)
-          session.send_message
         end
       end
     end
@@ -195,18 +163,8 @@ describe Session do
       context "when performing the 'place piece' event" do
         before(:each) { session.place_piece! }
 
-        it "is still in the 'in game' state" do
+        it "stays in the 'in game' state" do
           session.state_name.should == :in_game
-        end
-      end
-    end
-
-    context "when not in the 'in game' state" do
-      context "when performing the 'place_piece' event" do
-        it "sends an error message" do
-          message = /place piece command not allowed/i
-          client_socket.should_receive(:send_command).with(:error, message)
-          session.place_piece
         end
       end
     end
@@ -226,7 +184,7 @@ describe Session do
       context "when performing the 'end game' event" do
         before(:each) { session.end_game! }
 
-        it "is now in the 'joined server' state" do
+        it "transitions to the 'joined server' state" do
           session.state_name.should == :joined_server
         end
       end

@@ -15,8 +15,8 @@ describe Server do
   its(:port) { subject.port.should == 4567 }
 
   before(:each) do
-    first_client.stub(:name).and_return('First client')
-    second_client.stub(:name).and_return('Second client')
+    first_client.stub(:nickname).and_return('First client')
+    second_client.stub(:nickname).and_return('Second client')
   end
 
   describe "#with_connected_socket" do  
@@ -31,12 +31,12 @@ describe Server do
   end
 
   describe "#nickname_taken?" do
-    context "when checking if a name is taken" do
+    context "when checking if a nickname is taken" do
       context "when no sockets are connected" do
         specify { server.nickname_taken?('Some client').should be_false }
       end
 
-      context "when a socket with that name is connected" do
+      context "when a socket with that nickname is connected" do
         specify do
           server.with_connected_socket first_client do
             server.nickname_taken?('First client').should be_true
@@ -44,7 +44,7 @@ describe Server do
         end
       end
 
-      context "after the socket with that name was connected" do
+      context "after the socket with that nickname was connected" do
         specify do
           server.with_connected_socket(first_client) {}
           server.nickname_taken?('First client').should be_false

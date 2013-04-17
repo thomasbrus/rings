@@ -21,7 +21,7 @@ module Rings
     end
 
     def nickname_taken? name
-      @connected_clients.map(&:name).include? name
+      @connected_clients.map(&:nickname).include? name
     end
 
     def chat_supported?

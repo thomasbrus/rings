@@ -14,34 +14,35 @@ module Rings
 
       def self.command
         'place_piece'
-      end      
+      end
 
       def handle_command
-        if @session.place_piece
-          args = [arguments(:type), arguments(:color), arguments(:x), arguments(:y)]
+        @session.place_piece!
 
-          begin
-            # Handle when not in turn
-            client_socket.game.place_piece *args
-          rescue ArgumentError => e
-            raise CommandError, e.message
-          end
+        piece = PiecesFactory.create(arguments(:type), arguments(:color))
+        client_socket.take_turn(piece, arguments(:x), arguments(:y))
+        
+        args = [arguments(:type), arguments(:color), arguments(:x), arguments(:y)]
+        notify_all_players(:place_piece, args)
 
-          notify_all_players :place_ring, *args
-
-          if client_socket.game.over?
-            @session.end_game!
-            # client_socket.game.game_over!
-            notify_all_players :game_over, *winners.map(&:nickname)
-          end
+        if client_socket.game.over?
+          @session.end_game!
+          notify_all_players(:game_over, *client_socket.game.winners.map(&:nickname))
         end
+
+      rescue StateMachine::InvalidTransition        
+        message = "Place piece command not allowed. "
+        message << "It's only allowed to place pieces while in game."
+        client_socket.send_command(:error, message)
+      rescue ArgumentError => e
+        raise CommandError, e.message
       end
 
       private
 
       def notify_all_players command, args
         client_socket.game.each_player do |player|
-          player.send_command command, *args
+          player.send_command(command, *args)
         end
       end
     end

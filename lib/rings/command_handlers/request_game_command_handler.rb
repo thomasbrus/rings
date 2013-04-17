@@ -1,6 +1,7 @@
 require 'rings/command_handling'
 require 'rings/command_handler'
 require 'rings/waiting_queue'
+require 'rings/game'
 
 module Rings
   module CommandHandlers
@@ -18,28 +19,33 @@ module Rings
       end      
 
       def handle_command
-        number_of_players = arguments(:number_of_players)
+        @session.request_game!
 
-        unless number_of_players.between?(Game::MIN_PLAYERS, Game::MAX_PLAYERS)
+        unless arguments(:number_of_players).between?(Game::MIN_PLAYERS, Game::MAX_PLAYERS)
           raise CommandError, "Wrong number of players"
         end
 
-        if @session.request_game
-          waiting_queue = WaitingQueue.instance_for capacity
-          waiting_queue.enqueue item
+        waiting_queue = WaitingQueue.instance_for(arguments(:number_of_players))
+        waiting_queue.enqueue @session
 
-          if waiting_queue.ready? && waiting_queue.to_a.all?(&:start_game!)
-            setup_game waiting_queue.to_a.map(&:client_socket)
-            waiting_queue.each { |session| WaitingQueue.withdraw session }
-          end
+        if waiting_queue.ready? && waiting_queue.to_a.all?(&:start_game!)
+          setup_game(waiting_queue.to_a.map(&:client_socket))
+          waiting_queue.each { |session| WaitingQueue.withdraw(session) }
         end
+        
+      rescue StateMachine::InvalidTransition
+        message = "Request game command not allowed. "
+        message << "It's not allowed to request a game "
+        message << "before joining the server or when already in game."
+        client_socket.send_command(:error, message)
       end
 
       private
 
       def setup_game players
-        game = Game.new players
-        x, y = game.place_starting_pieces
+        x = [1,2,3].sample
+        y = [1,2,3].sample
+        game = Game.new x, y, players
 
         players.each do |player|
           player.game = game

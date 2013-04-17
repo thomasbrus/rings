@@ -19,12 +19,17 @@ module Rings
       end
 
       def handle_command
-        if @session.send_message
-          recipients = client_socket.game.each_player.select(&:chat_supported?)
-          recipients.each do |recipient|
-            recipient.send_command :add_message, client_socket.nickname, arguments(:message)
-          end
+        @session.send_message!
+
+        recipients = client_socket.game.each_player.select(&:chat_supported?)
+
+        recipients.each do |recipient|
+          recipient.send_command(:add_message, client_socket.nickname, arguments(:message))
         end
+      rescue StateMachine::InvalidTransition
+        message = "Chat command not allowed. "
+        message << "It's only allowed to send chat messages while in game."
+        client_socket.send_command(:error, message)
       end
     end
   end

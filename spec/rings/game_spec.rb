@@ -1,31 +1,60 @@
-# require 'spec_helper'
-# require 'rings/game'
+require 'spec_helper'
+require 'rings/game'
 
-# describe Game do
-#   let (:game) { Game.new [] }
+describe Game do
+  let (:first_player) { double :player }
+  let (:second_player) { double :player }
 
-#   describe "#place_piece" do
+  describe ".new" do
+    context "given no players" do
+      it "raises an error" do
+        
+      end
+    end
+
+    context "given invalid x and y coordinates" do
+      it "raises an error" do
+        
+      end      
+    end
+  end
+
+  describe "#current_player" do
+    context "when starting a new game" do
+      subject { Game.new 1, 1, [first_player, second_player] }  
+      specify { subject.current_player.should == first_player }
+    end
+  end
+
+  describe "#take_turn" do
+
+  end
+
+  describe "#over?" do
+
+  end
+
+  describe "#winners" do
     
-#   end
+  end
 
-#   describe "#place_starting_pieces" do
-#     it "chooses a random field within a valid range" do
-#       Board.any_instance.should_receive(:place_starting_pieces).once do |x, y|
-#         x.should be_between 1, 3
-#         y.should be_between 1, 3
-#       end
-#       game.place_starting_pieces      
-#     end
+  # describe "#place_starting_pieces" do
+  #   it "chooses a random field within a valid range" do
+  #     Board.any_instance.should_receive(:place_starting_pieces).once do |x, y|
+  #       x.should be_between 1, 3
+  #       y.should be_between 1, 3
+  #     end
+  #     game.place_starting_pieces      
+  #   end
 
-#     it "returns the x and y coordinates of the starting pieces" do
-#       x, y = game.place_starting_pieces
-#       x.should be_between 1, 3
-#       y.should be_between 1, 3
-#     end
-
-
-#   end
+  #   it "returns the x and y coordinates of the starting pieces" do
+  #     x, y = game.place_starting_pieces
+  #     x.should be_between 1, 3
+  #     y.should be_between 1, 3
+  #   end
+  # end
 
 
 
-# end
+
+end

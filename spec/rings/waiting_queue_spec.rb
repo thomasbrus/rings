@@ -90,32 +90,36 @@ describe WaitingQueue do
     end
   end
 
-  describe "#ready?" do
-    context "when the capacity of the queue is zero" do
-      subject { WaitingQueue.instance_for 0 }
-      after(:each) { subject.instance_variable_set :@items, [] }
-      it { should be_ready }
+  describe "#ready?" do    
+    let(:first_item) { double :item }
+    let(:second_item) { double :item }
+    let(:third_item) { double :item }
+
+    context "given an empty queue" do
+      context "when the capacity of the queue is zero" do
+        subject { WaitingQueue.instance_for 0 }
+        after(:each) { subject.instance_variable_set :@items, [] }
+        it { should be_ready }
+      end
+
+      context "when the capacity of the queue is two" do
+        subject { WaitingQueue.instance_for 2 }
+        after(:each) { subject.instance_variable_set :@items, [] }
+
+        it { should_not be_ready }
+      end
     end
 
-    context "when the capacity of the queue is two" do
-      let(:first_item) { double :item }
-      let(:second_item) { double :item }
-      let(:third_item) { double :item }
-
+    context "when the capacity is reached" do
       subject { WaitingQueue.instance_for 2 }
       after(:each) { subject.instance_variable_set :@items, [] }
 
-      it { should_not be_ready }
-
-      context "when the capacity is reached" do
-        before(:each) do
-          subject.enqueue first_item
-          subject.enqueue second_item
-        end
-
-        it { should be_ready }
+      before(:each) do
+        subject.enqueue first_item
+        subject.enqueue second_item
       end
+      
+      it { should be_ready }
     end
   end
-
 end
