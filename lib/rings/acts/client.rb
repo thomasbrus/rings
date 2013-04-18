@@ -14,7 +14,7 @@ module Rings
       end
 
       module InstanceMethods
-        attr_accessor :nickname, :game
+        attr_accessor :nickname
         attr_writer :chat_supported, :challenge_supported
 
         def chat_supported?
@@ -24,18 +24,10 @@ module Rings
         def challenge_supported?
           @challenge_supported
         end
-
-        def in_game?
-          !game.nil?
-        end
-
+        
         def send_command command, *args
           encoded_args = args.map { |arg| URI.encode(arg.to_s) }
           puts [command, *encoded_args].join(' ')
-        end
-
-        def take_turn piece, x, y
-          game.take_turn(self, piece, x, y)
         end
       end
     end

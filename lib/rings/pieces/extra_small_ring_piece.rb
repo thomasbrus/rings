@@ -2,9 +2,9 @@ require 'rings/piece'
 
 module Rings
   module Pieces
-    class ExtraSmallSolidPiece < Piece
+    class ExtraSmallRingPiece < Piece
       def solid?
-        true
+        false
       end
 
       def size

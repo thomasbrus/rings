@@ -11,15 +11,19 @@ module Rings
     end
 
     def solid?
-      raise NotImplementedError, "Sub class must implemented this method"
+      raise NotImplementedError, "Sub class must implement this method"
     end
 
     def size
-      raise NotImplementedError, "Sub class must implemented this method"
+      raise NotImplementedError, "Sub class must implement this method"
     end
 
     def type
       [size, solid? ? 'solid' : 'ring', "piece"].join('_').to_sym
+    end
+
+    def == other
+      color == other.color && size == other.size && solid? == other.solid?
     end
   end
 end

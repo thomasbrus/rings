@@ -1,11 +1,11 @@
 require 'spec_helper'
-require 'rings/pieces/extra_small_solid_piece'
+require 'rings/pieces/extra_small_ring_piece'
 require 'support/shared_examples_for_piece'
 
-describe Pieces::ExtraSmallSolidPiece do
+describe Pieces::ExtraSmallRingPiece do
   it_behaves_like Piece do    
     describe "#solid?" do
-      specify { subject.solid?.should be_true }
+      specify { subject.solid?.should be_false }
     end
 
     describe "#size" do
@@ -13,7 +13,7 @@ describe Pieces::ExtraSmallSolidPiece do
     end
 
     describe "#type" do
-      specify { subject.type.should == :extra_small_solid_piece }
+      specify { subject.type.should == :extra_small_ring_piece }
     end
   end
 end

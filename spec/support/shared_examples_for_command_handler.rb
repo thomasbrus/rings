@@ -6,7 +6,7 @@ shared_examples_for CommandHandler do
   before(:each) do
     server.stub(:nickname_taken?).and_return(false)
     server.stub(:chat_supported?).and_return(true)
-    server.stub(:challenge_supported?).and_return(true)
+    server.stub(:challenge_supported?).and_return(false)
     
     client_socket.stub(:nickname=)
     client_socket.stub(:game=)

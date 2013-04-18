@@ -20,4 +20,10 @@ shared_examples_for Rings::Piece do
       end
     end
   end
+
+  describe "#==" do
+    it "handles equality correctly" do
+      described_class.new(:red).should == described_class.new(:red)
+    end
+  end
 end

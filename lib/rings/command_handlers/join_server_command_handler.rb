@@ -2,6 +2,8 @@ require 'uri'
 require 'rings/command_handling'
 require 'rings/command_handler'
 
+require 'state_machine/core'
+
 module Rings
   module CommandHandlers
     class JoinServerCommandHandler < CommandHandler
@@ -18,24 +20,25 @@ module Rings
       end
 
       def handle_command
-        @session.join_server!
+        if @session.can_join_server?
+          @session.join_server!
 
-        if server.nickname_taken? arguments(:nickname)
-          raise CommandError, %Q[Nickname "#{arguments(:nickname)} is already taken."]
+          if server.nickname_taken? arguments(:nickname)
+            raise CommandError, %Q[Nickname "#{arguments(:nickname)}" is already taken."]
+          end
+     
+          client_socket.nickname = arguments(:nickname)
+          client_socket.chat_supported = arguments(:chat_supported?)
+          client_socket.challenge_supported = arguments(:challenge_supported?)
+
+          send_chat_support_notification server.chat_supported?
+          send_challenge_support_notification server.challenge_supported?
+        else
+          message = "Join command not allowed. "
+          message << "It's not allowed to join twice."
+          client_socket.send_command(:error, message)
         end
-   
-        client_socket.nickname = arguments(:nickname)
-        client_socket.chat_supported = arguments(:chat_supported?)
-        client_socket.challenge_supported = arguments(:challenge_supported?)
-
-        send_chat_support_notification server.chat_supported?
-        send_challenge_support_notification server.challenge_supported?
-        
-      rescue StateMachine::InvalidTransition
-        message = "Join command not allowed. "
-        message << "It's not allowed to join twice."
-        client_socket.send_command(:error, message)
-      end      
+      end
 
       private
 

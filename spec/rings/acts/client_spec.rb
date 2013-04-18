@@ -8,40 +8,32 @@ describe Acts::Client do
   describe ".acts_as_client" do
     before(:each) { subject.class.send :acts_as_client }
     
-    context "when name is set" do
-      before(:each) { subject.nickname = 'thomas' }
+    it { should respond_to :nickname }
+    it { should respond_to :nickname= }
 
-      describe "#nickname" do
-        specify { subject.nickname.should == 'thomas' }  
-      end      
-    end
-
-    context "when in game" do
-      let(:dummy_game) { double :game }
-      before(:each) { subject.game = dummy_game }
-
-      describe "#game" do
-        specify { subject.game.should == dummy_game }  
-      end
-
-      describe "#in_game?" do
-        specify { subject.in_game?.should be_true }
-      end      
-    end
-
-    context "when it supports chat" do
-      before(:each) { subject.chat_supported = true }
-      
-      describe "#chat_supported?" do
+    describe "#chat_supported?" do
+      context "when it supports chat" do
+        before(:each) { subject.chat_supported = true }
         specify { subject.chat_supported?.should be_true }
       end
     end
-
-    context "when it supports challenge" do
-      before(:each) { subject.challenge_supported = true }
-
-      describe "challenge_supported?" do
+    
+    describe "challenge_supported?" do
+      context "when it supports challenge" do
+        before(:each) { subject.challenge_supported = true }
         specify { subject.challenge_supported?.should be_true }
+      end
+    end
+
+    describe "#send_command" do      
+      it "encodes the arguments" do
+        subject.should_receive(:puts).with("send_message hello%20there")
+        subject.send_command(:send_message, "hello there")
+      end
+
+      it "uses spaces the join the command and it arguments" do
+        subject.should_receive(:puts).with("send_message thomas hello")
+        subject.send_command(:send_message, "thomas", "hello")
       end
     end
   end

@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'rings/pieces_factory'
 
-require 'rings/pieces/extra_small_solid_piece'
+require 'rings/pieces/extra_small_ring_piece'
 require 'rings/pieces/large_ring_piece'
 require 'rings/pieces/large_solid_piece'
 require 'rings/pieces/medium_ring_piece'
@@ -9,10 +9,10 @@ require 'rings/pieces/small_ring_piece'
 
 describe PiecesFactory do
   describe ".create" do
-    context "when creating an extra small solid piece" do
+    context "when creating an extra small ring piece" do
       specify do
-        instance = PiecesFactory.create :extra_small_solid_piece, :yellow
-        instance.class.should == Pieces::ExtraSmallSolidPiece
+        instance = PiecesFactory.create :extra_small_ring_piece, :yellow
+        instance.class.should == Pieces::ExtraSmallRingPiece
       end
     end
 

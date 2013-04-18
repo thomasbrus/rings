@@ -10,41 +10,49 @@ describe CommandHandlers::JoinServerCommandHandler do
     end
 
     describe "#handle_command" do
-      # context "given valid arguments" do
-      #   context "when the nickname is taken" do
-      #     before(:each) { server.stub(:nickname_taken?).and_return(true) }
+      subject { described_class.new(session, "thomas", "1", "1") }
 
-      #     it "sends an error message" do
-      #       client_socket.should_receive(:puts)
-      #         .with(%q[error "Name 'thomas' is already taken."])
-      #       subject.handle_command(*%w[thomas 1 1])
-      #     end
-      #   end
+      before(:each) do
+        session.stub(:join_server!)
+        client_socket.stub(:send_command)
+      end
 
-      #   context "when the nickname is not taken" do
-      #     it "stores the nickname of the client" do
-      #       client_socket.should_receive(:nickname=).with("thomas")
-      #       subject.handle_command(*%w[thomas 1 1])            
-      #     end
+      context "when the nickname is taken" do
+        before(:each) { server.stub(:nickname_taken?).and_return(true) }
 
-      #     it "stores whether the client supports chat functionality" do
-      #       client_socket.should_receive(:chat_supported=).with(true)
-      #       subject.handle_command(*%w[thomas 1 1])
-      #     end
+        it "raises an error" do
+          message = /nickname "thomas" is already taken/i
+          expect { subject.handle_command
+          }.to raise_error CommandHandling::CommandError, message
+        end
+      end
 
-      #     it "stores whether the client supports challenge functionality" do
-      #       client_socket.should_receive(:challenge_supported=).with(true)
-      #       subject.handle_command(*%w[thomas 1 1])
-      #     end
+      context "when the nickname is not taken" do
+        it "stores the nickname of the client" do
+          client_socket.should_receive(:nickname=).with("thomas")
+          subject.handle_command
+        end
 
-      #     it "send a response message" do
-      #       client_socket.unstub(:puts)
-      #       client_socket.should_receive(:puts)
-      #         .with(%q[greet 1 1])
-      #       subject.handle_command(*%w[thomas 1 1])
-      #     end
-      #   end
-      # end
+        it "stores whether the client supports chat functionality" do
+          client_socket.should_receive(:chat_supported=).with(true)
+          subject.handle_command
+        end
+
+        it "stores whether the client supports challenge functionality" do
+          client_socket.should_receive(:challenge_supported=).with(true)
+          subject.handle_command
+        end
+
+        it "notifies the client whether the server supports chat" do
+          client_socket.should_receive(:send_command).with(:notify_chat_support, 1)
+          subject.handle_command
+        end
+
+        it "notifies the client whether the server supports challenge" do
+          client_socket.should_receive(:send_command).with(:notify_challenge_support, 0)
+          subject.handle_command
+        end
+      end
     end
   end
 end

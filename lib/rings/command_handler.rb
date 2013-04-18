@@ -10,11 +10,11 @@ module Rings
     end
 
     def self.command
-      raise NotImplementedError, "Sub class must implemented this method"
+      raise NotImplementedError, "Sub class must implement this method"
     end
 
     def handle_command
-      raise NotImplementedError, "Sub class must implemented this method"
+      raise NotImplementedError, "Sub class must implement this method"
     end
   end
 end

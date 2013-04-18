@@ -11,50 +11,62 @@ describe CommandHandlers::RequestGameCommandHandler do
     end
 
     describe "#handle_command" do
-      # context "given valid arguments" do
-      #   context "given too few players" do
-      #     it "sends an error message" do
-      #       client_socket.should_receive(:puts)
-      #         .with(%q[error "Wrong number of players (1 for 2-4)"])
-      #       subject.handle_command("1")
-      #     end
-      #   end
+      context "given too few players" do
+        subject { described_class.new(session, "1") }
+        before(:each) { session.stub(:request_game!) }
 
-      #   context "given too many players" do
-      #     it "sends an error message" do
-      #       client_socket.should_receive(:puts)
-      #         .with(%q[error "Wrong number of players (5 for 2-4)"])
-      #       subject.handle_command("5")
-      #     end
-      #   end
+        it "raises an error" do
+          message = /wrong number of players/i
+          expect { subject.handle_command
+          }.to raise_error CommandHandling::CommandError, message
+        end
+      end
 
-      #   context "given enough players" do
-      #     it "enqueus the player" do
-      #       WaitingQueue.instance_for(3).should_receive(:enqueue).once
-      #         .with(client_socket)
-      #       subject.handle_command("3")
-      #     end
+      context "given too many players" do
+        subject { described_class.new(session, "5") }
+        before(:each) { session.stub(:request_game!) }
 
-      #     context "when the queue is ready" do
-      #       let(:first_client_socket) { double :client_socket }
-      #       let(:second_client_socket) { double :client_socket }
+        it "raises an error" do
+          message = /wrong number of players/i
+          expect { subject.handle_command
+          }.to raise_error CommandHandling::CommandError, message
+        end
+      end
 
-      #       before(:each) do
-      #         first_client_socket.stub(:puts)
-      #         second_client_socket.stub(:puts)
-      #         WaitingQueue.instance_for(3).enqueue first_client_socket
-      #         WaitingQueue.instance_for(3).enqueue second_client_socket              
-      #       end
+      context "given enough players" do
+        subject { described_class.new(session, "3") }
+        before(:each) { session.stub(:request_game!) }
 
-      #       it "withdraws each player from all queues" do
-      #         [first_client_socket, second_client_socket, client_socket].each do |socket|
-      #           WaitingQueue.should_receive(:withdraw).with(socket).ordered
-      #         end
-      #         subject.handle_command("3")
-      #       end
-      #     end
-      #   end
-      # end
+        it "enqueus the session associated to the player" do
+          WaitingQueue.instance_for(3).should_receive(:enqueue).with(session)
+          subject.handle_command
+        end
+
+        # context "when the queue is ready" do
+        #   let(:first_session) { double :session }
+        #   let(:second_session) { double :session }
+
+        #   before(:each) do
+        #     first_session.stub(:puts)
+        #     second_session.stub(:puts)
+        #     WaitingQueue.instance_for(3).enqueue first_session
+        #     WaitingQueue.instance_for(3).enqueue second_session
+        #     session.stub(:start_game)
+        #     first_session.stub(:start_game)
+        #     second_session.stub(:start_game)
+        #     first_session.stub(:client_socket).and_return(double(:client_socket))
+        #     second_session.stub(:client_socket).and_return(double(:client_socket))
+        #   end
+
+        #   it "withdraws each player from all queues" do
+        #     [first_session, second_session, session].each do |socket|
+        #       WaitingQueue.should_receive(:withdraw).with(socket).ordered
+        #     end
+        #     subject.handle_command
+        #   end
+        # end
+      end
+
     end
   end
 end
