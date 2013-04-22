@@ -2,6 +2,7 @@ require 'rings/command_handling'
 require 'rings/command_handler'
 require 'rings/waiting_queue'
 require 'rings/game'
+require 'rings/games_factory'
 
 require 'state_machine/core'
 
@@ -21,28 +22,28 @@ module Rings
       end      
 
       def handle_command
-        if @session.can_request_game?
-          @session.request_game!
-
-          unless arguments(:number_of_players).between?(Game::MIN_PLAYERS, Game::MAX_PLAYERS)
-            raise CommandError, "Wrong number of players"
-          end
-
-          waiting_queue = WaitingQueue.instance_for(arguments(:number_of_players))
-          waiting_queue.enqueue @session
-
-          if waiting_queue.ready?
-            sessions = waiting_queue.to_a
-            sessions.each(&:start_game)
-            setup_game(sessions.map(&:client_socket))
-            sessions.each { |session| WaitingQueue.withdraw(session) }
-          end
-        else
-          message = "Request game command not allowed. "
-          message << "It's not allowed to request a game "
-          message << "before joining the server or when already in game."
-          client_socket.send_command(:error, message)
+        unless arguments(:number_of_players).between?(Game::MIN_PLAYERS, Game::MAX_PLAYERS)
+          raise CommandError, "Wrong number of players"
         end
+
+        @session.request_game!
+
+        waiting_queue = WaitingQueue.instance_for(arguments(:number_of_players))
+        waiting_queue.enqueue @session
+
+        if waiting_queue.ready?
+          sessions = waiting_queue.to_a
+          sessions.each(&:start_game)
+          setup_game(sessions.map(&:client_socket))
+          sessions.each { |session| WaitingQueue.withdraw(session) }
+        end
+
+      rescue StateMachine::InvalidTransition        
+        message = "Request game command not allowed. "
+        message << "It's not allowed to request a game "
+        message << "before joining the server or when already in game."
+        client_socket.send_command(:error, message)
+        server.logger.warn(message)
       end
 
       private

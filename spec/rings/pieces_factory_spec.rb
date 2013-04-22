@@ -45,4 +45,3 @@ describe PiecesFactory do
     end
   end
 end
-

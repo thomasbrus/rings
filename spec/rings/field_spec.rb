@@ -99,11 +99,11 @@ describe Field do
       end
 
       it "has two red colored pieces" do
-        subject.number_of_pieces_for_color(:red).should == 2
+        subject.number_of_pieces_of_color(:red).should == 2
       end
 
       it "has no yellow colored pieces" do
-        subject.number_of_pieces_for_color(:yellow).should == 0
+        subject.number_of_pieces_of_color(:yellow).should == 0
       end
     end
   end

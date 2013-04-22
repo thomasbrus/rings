@@ -35,16 +35,16 @@ module Rings
     end
 
     def has_adjacent_solid_piece_of_color? color, x, y
-      adjacent_pieces(x, y).any? { |p| p.has_solid_piece_of_color?(color) }
+      adjacent_fields(x, y).any? { |f| f.has_solid_piece_of_color?(color) }
     end
 
     def has_adjacent_piece_of_color? color, x, y
-      adjacent_pieces(x, y).any? { |p| p.has_piece_of_color?(color) }
+      adjacent_fields(x, y).any? { |f| f.has_piece_of_color?(color) }
     end
 
     private
 
-    def adjacent_pieces x, y
+    def adjacent_fields x, y
       @fields.select do |field|
         horizontal_distance = (x - field.x).abs
         vertical_distance = (y - field.y).abs

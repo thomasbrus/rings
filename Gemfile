@@ -11,3 +11,4 @@ group :development do
 end
 
 gem 'state_machine', '~> 1.1.2', :require => 'state_machine/core'
+gem 'colored', '~> 1.2'

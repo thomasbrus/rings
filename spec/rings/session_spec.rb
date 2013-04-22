@@ -6,23 +6,25 @@ describe Session do
   let(:server) { double :server }
   let(:client_socket) { double :client_socket }
   let(:session) { Session.new(server, client_socket) }
+  let(:logger) { double :logger }
 
   before(:each) do
     client_socket.stub(:eof?).and_return(true)
+    client_socket.stub(:gets).and_return(nil)
+    client_socket.stub(:nickname).and_return("thomas")
     server.stub(:with_connected_socket) { |&block| block.call }
+    server.stub(:logger).and_return(logger)
+    logger.stub(:info)
+    logger.stub(:error)
+    logger.stub(:warn)
   end
 
   describe ".new" do
     context "given a client socket that sends a stream of commands" do
-      before(:each) do
-        client_socket.stub(:eof?).and_return(false, true)
-      end
-
       context "given an invalid command" do
         before(:each) do
-          client_socket.stub(:gets).and_return("some_unknown_command")
+          client_socket.stub(:gets).and_return("some_unknown_command", nil)
           client_socket.stub(:send_command)
-          server.stub(:puts)
         end
         
         it "sends the error message to the client" do
@@ -32,42 +34,42 @@ describe Session do
         end
 
         it "sends the error message to the server" do
-          server.should_receive(:puts).with(/unknown_command/i)
+          logger.should_receive(:warn).with(/unknown_command/i)
           Session.new(server, client_socket)
         end
       end
 
       context "given a valid command and valid arguments" do
         it "parses a command and its arguments" do
-          client_socket.stub(:gets).and_return("my_command arg1 arg2")
+          client_socket.stub(:gets).and_return("my_command arg1 arg2", nil)
           Session.any_instance.should_receive(:handle_incoming_command)
             .with("my_command", %w[arg1 arg2])
           Session.new(server, client_socket)
         end
 
         it "handles the join server command" do
-          client_socket.stub(:gets).and_return("join_server thomas 1 1")
+          client_socket.stub(:gets).and_return("join_server thomas 1 1", nil)
           klass = CommandHandlers::JoinServerCommandHandler
           klass.any_instance.should_receive(:handle_command)
           Session.new(server, client_socket)
         end
 
         it "handles the request game command" do
-          client_socket.stub(:gets).and_return("request_game 3")
+          client_socket.stub(:gets).and_return("request_game 3", nil)
           klass = CommandHandlers::RequestGameCommandHandler
           klass.any_instance.should_receive(:handle_command)
           Session.new(server, client_socket)
         end
 
         it "handles the place piece command" do
-          client_socket.stub(:gets).and_return("place_piece medium_ring_piece red 1 1")        
+          client_socket.stub(:gets).and_return("place_piece medium_ring_piece red 1 1", nil)
           klass = CommandHandlers::PlacePieceCommandHandler
           klass.any_instance.should_receive(:handle_command)
           Session.new(server, client_socket)
         end
 
         it "handles the send message command" do
-          client_socket.stub(:gets).and_return(%q[send_message hello%20there])
+          client_socket.stub(:gets).and_return(%q[send_message hello%20there], nil)
           klass = CommandHandlers::SendMessageCommandHandler
           klass.any_instance.should_receive(:handle_command)
           Session.new(server, client_socket)
@@ -190,4 +192,7 @@ describe Session do
       end
     end
   end
+
+  # TODO: .after_transition, .after_failure
+
 end

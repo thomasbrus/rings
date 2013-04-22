@@ -1,9 +1,15 @@
 require 'spec_helper'
 require 'rings/game'
+require 'rings/games/two_player_game'
 
 describe Game do
   let (:first_player) { double :player }
   let (:second_player) { double :player }
+
+  before(:each) do
+    first_player.stub(:arsenal=)
+    second_player.stub(:arsenal=)
+  end
 
   describe ".new" do
     context "given no players" do
@@ -21,7 +27,8 @@ describe Game do
 
   describe "#current_player" do
     context "when starting a new game" do
-      subject { Game.new 1, 1, [first_player, second_player] }  
+      # TODO: Move to two_player_game_spec.rb
+      subject { Games::TwoPlayerGame.new 1, 1, first_player, second_player }  
       specify { subject.current_player.should == first_player }
     end
   end
@@ -53,8 +60,5 @@ describe Game do
   #     y.should be_between 1, 3
   #   end
   # end
-
-
-
 
 end

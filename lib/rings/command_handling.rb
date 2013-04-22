@@ -31,12 +31,14 @@ module Rings
         options = self.class.argument_options
         
         unless arguments.count == options.count
-          raise CommandError, "Wrong number of arguments."
+          given = arguments.count
+          expected = options.count
+          raise CommandError, "Wrong number of arguments given (#{given} for #{expected})."
         end
         
         parsed_values = options.values.zip(options.keys, arguments).map do |type, key, value|
           if (match_data = value.match(regex_by_argument_type(type))).nil? || value != match_data.to_s
-            raise CommandError, "Could not parse argument " + "(#{value} for #{key.inspect})"
+            raise CommandError, "Could not parse as #{type}: #{value}"
           end
 
           method_by_argument_type(type).to_proc.(value)

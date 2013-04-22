@@ -35,6 +35,19 @@ module Rings
       event :end_game do
         transition :in_game => :joined_server
       end
+
+      after_transition on: :join_server do |session|
+        message = "#{session.client_socket.inspect} joined the server"
+        message << session.client_socket.nickname.to_s
+        session.server.logger.info message.bold
+      end
+
+      [:join_server, :send_message, :place_piece, :request_game].each do |command|
+        after_failure on: command do |session|
+          message = "Failed to issue the #{command} command"
+          session.server.logger.warn message
+        end
+      end
     end
 
     def initialize(server, client_socket)
@@ -44,8 +57,14 @@ module Rings
       initialize_state_machines
       
       server.with_connected_socket(client_socket) do
-        until client_socket.eof?
-          parse_line client_socket.gets
+        begin
+          while line = client_socket.gets
+            parse_line(line)
+          end
+        rescue Errno::ECONNRESET => e
+          server.logger.error e.message
+        ensure
+          server.logger.info "#{client_socket.inspect} disconnected"
         end
       end      
     end
@@ -58,7 +77,7 @@ module Rings
       handle_incoming_command command, args
     rescue CommandHandling::CommandError => e
       client_socket.send_command :error, e.message
-      server.puts %Q[Error occured while handling command. #{e.message}]
+      server.logger.warn "Could not handle command. #{e.message}"
     end
 
     def command_handlers
@@ -75,6 +94,7 @@ module Rings
         command_handler_klass.command == command
       end
 
+      server.logger.info "Received command: #{command} with arguments: #{arguments.inspect}"
       command_handler_klass.new(self, *arguments).handle_command
     end
   end

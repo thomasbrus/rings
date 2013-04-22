@@ -7,11 +7,11 @@ module Rings
     def create x, y, players
       case players.count
       when 2
-        TwoPlayerGame.new(x, y, *players)
+        Games::TwoPlayerGame.new(x, y, *players)
       when 3
-        ThreePlayerGame.new(x, y, *players)
+        Games::ThreePlayerGame.new(x, y, *players)
       when 4
-        FourPlayerGame.new(x, y, *players)
+        Games::FourPlayerGame.new(x, y, *players)
       else
         raise ArgumentError, "Invalid number of players, must be between 2 and 4."
       end

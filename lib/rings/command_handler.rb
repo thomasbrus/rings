@@ -1,4 +1,5 @@
 require 'forwardable'
+require 'state_machine/core'
 
 module Rings
   class CommandHandler

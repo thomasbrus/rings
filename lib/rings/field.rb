@@ -10,8 +10,8 @@ module Rings
     end
 
     def place piece
-      raise ArgumentError, "Cannot place this piece here." unless can_place? piece
-      @pieces.add piece
+      raise ArgumentError, "Cannot place this piece here." unless can_place?(piece)
+      @pieces.add(piece)
     end
 
     def can_place? piece
@@ -30,7 +30,11 @@ module Rings
       @pieces.any? { |piece| piece.solid? }
     end
 
-    def number_of_pieces_for_color color
+    def has_solid_piece_of_color? color
+      @pieces.any? { |piece| piece.solid? && piece.color == color }
+    end
+
+    def number_of_pieces_of_color color
       @pieces.count { |piece| piece.color == color }
     end
   end

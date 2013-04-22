@@ -17,7 +17,7 @@ module Rings
           *PiecesFactory.create_arsenal(Piece::ALLOWED_COLORS[1]),
         ]
 
-        @players[0].arsenal = [
+        @players[1].arsenal = [
           *PiecesFactory.create_arsenal(Piece::ALLOWED_COLORS[2]),
           *PiecesFactory.create_arsenal(Piece::ALLOWED_COLORS[3]),
         ]

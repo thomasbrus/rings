@@ -11,9 +11,13 @@ describe CommandHandlers::RequestGameCommandHandler do
     end
 
     describe "#handle_command" do
+      before(:each) do
+        session.stub(:request_game!)
+        session.stub(:can_request_game?).and_return(true)
+      end
+
       context "given too few players" do
         subject { described_class.new(session, "1") }
-        before(:each) { session.stub(:request_game!) }
 
         it "raises an error" do
           message = /wrong number of players/i
@@ -24,7 +28,6 @@ describe CommandHandlers::RequestGameCommandHandler do
 
       context "given too many players" do
         subject { described_class.new(session, "5") }
-        before(:each) { session.stub(:request_game!) }
 
         it "raises an error" do
           message = /wrong number of players/i
@@ -35,7 +38,6 @@ describe CommandHandlers::RequestGameCommandHandler do
 
       context "given enough players" do
         subject { described_class.new(session, "3") }
-        before(:each) { session.stub(:request_game!) }
 
         it "enqueus the session associated to the player" do
           WaitingQueue.instance_for(3).should_receive(:enqueue).with(session)
@@ -67,6 +69,19 @@ describe CommandHandlers::RequestGameCommandHandler do
         # end
       end
 
+      context "when it cannot request a game" do
+      #   subject { described_class.new(session, "3") }
+
+      #   before(:each) do
+      #     session.stub(:can_request_game?).and_return(false)
+      #   end
+
+      #   it "sends an error message" do
+      #     message = /request game command not allowed/i
+      #     client_socket.should_receive(:send_command).with(:error, message)
+      #     subject.handle_command
+      #   end        
+      end
     end
   end
 end

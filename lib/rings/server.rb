@@ -1,17 +1,18 @@
 require 'socket'
 require 'forwardable'
+require 'rings/logger'
 
 module Rings
   class Server < TCPServer
-    attr_reader :port
+    attr_reader :port, :logger
     
     extend Forwardable
-    def_delegators :STDOUT, :puts
         
     def initialize port
       super port
       @port = port
       @connected_clients = []
+      @logger = Logger.new(STDOUT)
     end
 
     def with_connected_socket client_socket, &block
@@ -31,6 +32,5 @@ module Rings
     def challenge_supported?
       false
     end
-
   end
 end

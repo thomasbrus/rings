@@ -14,7 +14,7 @@ describe CommandHandlers::JoinServerCommandHandler do
 
       before(:each) do
         session.stub(:join_server!)
-        client_socket.stub(:send_command)
+        session.stub(:can_join_server?).and_return(true)
       end
 
       context "when the nickname is taken" do
@@ -28,6 +28,8 @@ describe CommandHandlers::JoinServerCommandHandler do
       end
 
       context "when the nickname is not taken" do
+        before(:each) { client_socket.stub(:send_command) }
+
         it "stores the nickname of the client" do
           client_socket.should_receive(:nickname=).with("thomas")
           subject.handle_command
@@ -52,6 +54,19 @@ describe CommandHandlers::JoinServerCommandHandler do
           client_socket.should_receive(:send_command).with(:notify_challenge_support, 0)
           subject.handle_command
         end
+      end
+
+      context "when it cannot join the server" do
+        # before(:each) do
+        #   session.stub(:join_server).and_raise(StateMachine::InvalidTransition.new(...))
+        #   session.stub(:can_join_server?).and_return(false)
+        # end
+
+        # it "sends an error message" do
+        #   message = /join command not allowed/i
+        #   client_socket.should_receive(:send_command).with(:error, message)
+        #   subject.handle_command
+        # end        
       end
     end
   end

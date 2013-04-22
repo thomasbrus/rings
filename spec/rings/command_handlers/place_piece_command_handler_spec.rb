@@ -10,6 +10,21 @@ describe CommandHandlers::PlacePieceCommandHandler do
     end
 
     describe "#handle_command" do
+      subject do
+        described_class.new(session, "large_solid_piece", "red", "1", "2")
+      end
+
+      context "when it cannot place a piece" do
+        # before(:each) do
+        #   session.stub(:can_place_piece?).and_return(false)
+        # end
+
+        # it "sends an error message" do
+        #   message = /place piece command not allowed/i
+        #   client_socket.should_receive(:send_command).with(:error, message)
+        #   subject.handle_command
+        # end        
+      end
     end
   end
 end

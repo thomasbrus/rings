@@ -29,11 +29,11 @@ module Rings
     end
 
     def take_turn player, piece, x, y    
-      raise ArgumentError, "It's this player's turn!" unless is_in_turn?(player)
+      raise ArgumentError, "It's not this player's turn!" unless is_in_turn?(player)
       raise ArgumentError, "Cannot place this piece here." unless can_place_piece?(piece, x, y)    
       
+      player.remove_piece_from_arsenal(piece)
       @board.place(piece, x, y)
-      @player.remove_piece_from_arsenal(piece)
       @current_turn = (@current_turn + 1) % @players.size
     end
 
@@ -92,7 +92,7 @@ module Rings
       @board.each_field.reject(&:has_solid_piece?).collect do |field|
         # Make a list of the number of times each color occurres
         color_count = Pieces::ALLOWED_COLORS.map do |color|
-          field.number_of_pieces_for_color(color)
+          field.number_of_pieces_of_color(color)
         end
 
         # Check if there is a single color that has the most
