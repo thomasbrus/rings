@@ -22,7 +22,7 @@ module Rings
     end
 
     def place piece, x, y
-      raise ArgumentError, "Cannot place this piece here." unless can_place? piece, x, y
+      raise ArgumentError, "Cannot place this piece here." unless can_place?(piece, x, y)
       @fields[x, y].place piece
     end
 

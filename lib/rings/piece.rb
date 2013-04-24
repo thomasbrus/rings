@@ -4,7 +4,7 @@ module Rings
     attr_reader :color
 
     def initialize color
-      unless ALLOWED_COLORS.include? color
+      unless ALLOWED_COLORS.include?(color)
         raise ArgumentError, "Invalid color, allowed colors are #{ALLOWED_COLORS.inspect}"
       end
       @color = color

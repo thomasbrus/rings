@@ -9,7 +9,7 @@ module Rings
 
       module ClassMethods
         def acts_as_client
-          send :include, InstanceMethods
+          include InstanceMethods
         end
       end
 

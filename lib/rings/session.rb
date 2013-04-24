@@ -42,6 +42,22 @@ module Rings
         session.server.logger.info message.bold
       end
 
+      after_transition on: :request_game do |session|
+        message = "#{session.client_socket.inspect} requested a game"
+    
+        session.server.logger.info message.bold
+      end
+
+      after_transition on: :send_message do |session|
+        message = "#{session.client_socket.inspect} sent a message"
+        session.server.logger.info message.bold
+      end
+
+      after_transition on: :place_piece do |session|
+        message = "#{session.client_socket.inspect} placed a piece"
+        session.server.logger.info message.bold
+      end
+
       [:join_server, :send_message, :place_piece, :request_game].each do |command|
         after_failure on: command do |session|
           message = "Failed to issue the #{command} command"
@@ -57,16 +73,14 @@ module Rings
       initialize_state_machines
       
       server.with_connected_socket(client_socket) do
-        begin
-          while line = client_socket.gets
-            parse_line(line)
-          end
-        rescue Errno::ECONNRESET => e
-          server.logger.error e.message
-        ensure
-          server.logger.info "#{client_socket.inspect} disconnected"
+        while line = client_socket.gets
+          parse_line(line)
         end
       end      
+    rescue Errno::ECONNRESET => e
+      server.logger.error e.message
+    ensure
+      server.logger.info "#{client_socket.inspect} disconnected"
     end
 
     private

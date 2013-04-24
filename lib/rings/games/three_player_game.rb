@@ -18,12 +18,9 @@ module Rings
 
       def find_player_for_color color
         case color
-        when Piece::ALLOWED_COLORS[0]
-          @players[0]
-        when Piece::ALLOWED_COLORS[1]
-          @players[1]
-        when Piece::ALLOWED_COLORS[2]
-          @players[2]
+        when Piece::ALLOWED_COLORS[0]; @players[0]
+        when Piece::ALLOWED_COLORS[1]; @players[1]
+        when Piece::ALLOWED_COLORS[2]; @players[2]
         end
       end      
     end

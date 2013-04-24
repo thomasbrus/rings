@@ -32,8 +32,7 @@ module Rings
         notify_all_players(:place_piece, args)
 
         if client_socket.game.over?
-          # FIX: This could also raise InvalidTransition ...
-          @session.end_game!
+          @session.end_game
           notify_all_players(:game_over, *client_socket.game.winners.map(&:nickname))
         end
       rescue StateMachine::InvalidTransition

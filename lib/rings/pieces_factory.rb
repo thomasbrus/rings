@@ -6,7 +6,7 @@ require 'rings/pieces/small_ring_piece'
 
 module Rings
   module PiecesFactory
-    def create type, color
+    def self.create type, color
       case type
       when :extra_small_ring_piece
         Rings::Pieces::ExtraSmallRingPiece.new(color)
@@ -23,7 +23,7 @@ module Rings
       end
     end
 
-    def create_arsenal color, shared_color = nil
+    def self.create_arsenal color, shared_color = nil
       arsenal = [
         Rings::Pieces::LargeSolidPiece.new(color),
         Rings::Pieces::LargeRingPiece.new(color),
@@ -42,7 +42,5 @@ module Rings
 
       arsenal
     end
-
-    module_function :create, :create_arsenal
   end
 end

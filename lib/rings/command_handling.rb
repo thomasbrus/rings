@@ -31,16 +31,14 @@ module Rings
         options = self.class.argument_options
         
         unless arguments.count == options.count
-          given = arguments.count
-          expected = options.count
-          raise CommandError, "Wrong number of arguments given (#{given} for #{expected})."
+          raise CommandError, "Wrong number of arguments given " +
+            " (#{arguments.count} for #{options.count})."
         end
         
         parsed_values = options.values.zip(options.keys, arguments).map do |type, key, value|
           if (match_data = value.match(regex_by_argument_type(type))).nil? || value != match_data.to_s
             raise CommandError, "Could not parse as #{type}: #{value}"
           end
-
           method_by_argument_type(type).to_proc.(value)
         end
 
@@ -51,17 +49,17 @@ module Rings
 
       def regex_by_argument_type type
         case type
-        when :integer then /[0-9]+/
-        when :boolean then /0|1/
-        when :string then /[^\s]+/
+        when :integer; /[0-9]+/
+        when :boolean; /0|1/
+        when :string; /[^\s]+/
         end
       end
 
       def method_by_argument_type type
         case type
-        when :integer then :to_i
-        when :boolean then ->(value) { value.to_i == 1 }
-        when :string then ->(value) { URI.decode value }
+        when :integer; :to_i
+        when :boolean; ->(value) { value.to_i == 1 }
+        when :string; ->(value) { URI.decode value }
         end
       end
     end

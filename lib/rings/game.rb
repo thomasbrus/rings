@@ -40,9 +40,7 @@ module Rings
     def over?
       @players.all? do |player|
         @board.each_field.all? do |field|
-          player.arsenal.all? do |piece|
-            !field.can_place?(piece)
-          end
+          player.arsenal.all? { |piece| !field.can_place?(piece) }
         end
       end
     end
@@ -63,10 +61,10 @@ module Rings
     private
     
     def place_starting_pieces x, y
-      @board.place LargeRingPiece.new(:purple), x, y
-      @board.place MediumRingPiece.new(:yellow), x, y
-      @board.place SmallRingPiece.new(:green), x, y
-      @board.place ExtraSmallRingPiece.new(:red), x, y
+      @board.place(LargeRingPiece.new(:purple), x, y)
+      @board.place(MediumRingPiece.new(:yellow), x, y)
+      @board.place(SmallRingPiece.new(:green), x, y)
+      @board.place(ExtraSmallRingPiece.new(:red), x, y)
     end
 
     def can_place_piece? piece, x, y

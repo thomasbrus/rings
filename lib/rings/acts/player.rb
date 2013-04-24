@@ -9,7 +9,7 @@ module Rings
 
       module ClassMethods
         def acts_as_player
-          send :include, InstanceMethods
+          include InstanceMethods
         end
       end
 
@@ -26,12 +26,7 @@ module Rings
 
         def remove_piece_from_arsenal piece
           index = arsenal.index(piece)
-          
-          if index.nil?
-            message = "Cannot remove this piece from the arsenal"
-            raise ArgumentError, message
-          end
-
+          raise ArgumentError, "Cannot remove this piece from the arsenal" if index.nil?
           arsenal.delete_at(index)
         end
 

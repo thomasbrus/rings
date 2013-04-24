@@ -17,12 +17,12 @@ module Rings
 
     def with_connected_socket client_socket, &block
       @connected_clients.push client_socket
-      yield
+      block.call
       @connected_clients.delete client_socket
     end
 
     def nickname_taken? name
-      @connected_clients.map(&:nickname).include? name
+      @connected_clients.map(&:nickname).include?(name)
     end
 
     def chat_supported?
