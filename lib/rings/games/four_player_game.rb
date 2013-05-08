@@ -15,7 +15,7 @@ module Rings
         end
       end
 
-      def find_player_for_color color
+      def find_player_by_color color
         @players[Piece::ALLOWED_COLORS.index(color)]
       end
     end

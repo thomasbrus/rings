@@ -8,6 +8,8 @@ require 'rings/pieces/large_solid_piece'
 require 'rings/pieces/medium_ring_piece'
 require 'rings/pieces/small_ring_piece'
 
+require 'colored'
+
 include Rings::Pieces
 
 module Rings
@@ -31,7 +33,7 @@ module Rings
     end
 
     def has_piece_of_color? color, x, y
-      @fields[x, y].has_piece_of_color? piece.color
+      @fields[x, y].has_piece_of_color? color
     end
 
     def has_adjacent_solid_piece_of_color? color, x, y

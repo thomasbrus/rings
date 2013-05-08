@@ -39,7 +39,7 @@ module Rings
       after_transition on: :join_server do |session|
         message = "#{session.client_socket.inspect} joined the server"
         message << session.client_socket.nickname.to_s
-        session.server.logger.info message.bold
+        session.server.logger.info message
       end
 
       after_transition on: :request_game do |session|
@@ -78,7 +78,7 @@ module Rings
         end
       end      
     rescue Errno::ECONNRESET => e
-      server.logger.error e.message
+      server.logger.info e.message
     ensure
       server.logger.info "#{client_socket.inspect} disconnected"
     end

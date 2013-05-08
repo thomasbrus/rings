@@ -19,7 +19,7 @@ module Rings
       place_starting_pieces(x, y)
       assign_arsenal_to_players
     end
-
+  
     def current_player
       @players[@current_turn]
     end
@@ -46,7 +46,7 @@ module Rings
     end
 
     def winner
-      # Create a hash of players and the number of territories they have won
+      # Create a hash of players with the number of territories they have won
       territories_won = Hash[territory_winners
         .group_by { |territory_winner| territory_winner }
         .map { |territory_winner, won_territories| [territory_winner, won_territories.count] }]
@@ -68,12 +68,10 @@ module Rings
     end
 
     def can_place_piece? piece, x, y
-      if piece.solid? && @board.has_adjacent_solid_piece_of_color?(piece.color, x, y)
-        return false
-      end
-    
-      @board.has_adjacent_piece_of_color?(piece.color, x, y) ||
-        @board.has_piece_of_color?(piece.color, x ,y)
+      return @board.can_place?(piece, x, y) &&
+        (!piece.solid? || !@board.has_adjacent_piece_of_color?(piece.color, x, y)) &&        
+        (@board.has_adjacent_piece_of_color?(piece.color, x, y) ||
+          @board.has_piece_of_color?(piece.color, x ,y))
     end
 
     def assign_arsenal_to_players
@@ -98,7 +96,7 @@ module Rings
         if color_count.count(color_count.max) == 1
           # Find the index of that color and lookup the corresponding player
           index = color_count.index(color_count.max)
-          find_player_for_color Pieces::ALLOWED_COLORS[index]
+          find_player_by_color Pieces::ALLOWED_COLORS[index]
         end
       end
     end

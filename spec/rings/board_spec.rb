@@ -15,7 +15,7 @@ describe Board do
           board.can_place?(piece, 1, 1).should be_true
         end
 
-        it "calls #can_place? on the field" do
+        it "delegates #can_place?" do
           Rings::Field.any_instance.should_receive(:can_place?).with(piece)
           board.can_place?(piece, 1, 1)
         end

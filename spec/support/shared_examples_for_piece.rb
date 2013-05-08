@@ -6,9 +6,7 @@ shared_examples_for Rings::Piece do
   describe ".new" do
     context "given a valid color" do
       it "can create the piece" do
-        expect {
-          described_class.new :yellow
-        }.to_not raise_error ArgumentError
+        described_class.new :yellow
       end
     end
 

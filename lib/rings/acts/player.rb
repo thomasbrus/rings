@@ -25,9 +25,10 @@ module Rings
         end
 
         def remove_piece_from_arsenal piece
-          index = arsenal.index(piece)
-          raise ArgumentError, "Cannot remove this piece from the arsenal" if index.nil?
-          arsenal.delete_at(index)
+          unless can_remove_piece_from_arsenal?(piece)
+            raise ArgumentError, "Cannot remove this piece from the arsenal"
+          end
+          arsenal.delete_at(arsenal.index(piece))
         end
 
         def can_remove_piece_from_arsenal? piece

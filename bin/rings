@@ -1,4 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'rings/runner'
-Runner.new(ARGV.first ? ARGV.first.to_i : 4567).run
+require 'rings/server'
+
+port = ARGV.first ? ARGV.first.to_i : 4567 
+Rings::Runner.run Rings::Server.new(port)

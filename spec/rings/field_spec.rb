@@ -85,9 +85,24 @@ describe Field do
   end
 
   describe "#has_solid_piece?" do
+    context "when the field is empty" do
+      specify { should_not have_solid_piece }
+    end
+
     context "when a solid piece is placed" do
       before(:each) { subject.place LargeSolidPiece.new(:green) }
       specify { should have_solid_piece }
+    end
+  end
+
+  describe "#has_solid_piece_of_color?" do
+    context "when the field is empty" do
+      specify { should_not have_solid_piece_of_color(:red) }
+    end
+
+    context "when a red solid piece is placed" do
+      before(:each) { subject.place LargeSolidPiece.new(:red) }
+      specify { should have_solid_piece_of_color(:red) }
     end
   end
 

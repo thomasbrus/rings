@@ -1,10 +1,12 @@
 require 'spec_helper'
+require 'rings/server'
 require 'support/mock_block'
 
 # Override the initialize method so that it doesn't actually start a tcp server
 Server.send(:define_method, :initialize) do |port|
   @port = port
   @connected_clients = []
+  @logger = Logger.new(STDOUT)
 end
 
 describe Server do
