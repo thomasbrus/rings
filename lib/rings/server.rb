@@ -1,6 +1,7 @@
 require 'socket'
 require 'forwardable'
-require 'rings/logger'
+require 'logger'
+require 'logger/colors'
 
 module Rings
   class Server < TCPServer
@@ -8,11 +9,11 @@ module Rings
     
     extend Forwardable
         
-    def initialize port
+    def initialize port = 4567, logger = Logger.new(STDOUT)
       super port
       @port = port
       @connected_clients = []
-      @logger = Logger.new(STDOUT)
+      @logger = logger
     end
 
     def with_connected_socket client_socket, &block
