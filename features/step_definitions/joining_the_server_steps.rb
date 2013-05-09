@@ -1,9 +1,13 @@
 require 'uri'
 
-Given(/^I have joined the server using the nickname "(.*?)"$/) do |nickname|
+Given(/^I have joined the server$/) do
+  step %Q[I have joined the server using the nickname "thomasbrus"]
+end
+
+Given(/^I have joined the server using the nickname "(.+)"$/) do |nickname|
   step %Q[I use the nickname "#{nickname}"]
-  step "I should receive a message which indicates whether the server supports chat"
-  step "I should receive a message which indicates whether the server supports challenge"
+  step %Q[I should receive a message which indicates whether the server supports chat]
+  step %Q[I should receive a message which indicates whether the server supports challenge]
 end
 
 When(/^I use the nickname "(.+)"$/) do |nickname|
