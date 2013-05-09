@@ -1,5 +1,29 @@
-When(/^I join the server (without using a nickname)|(using the nickname "(.+))"$/) do |_, _, nickname|
-  chat_supported = 1
-  challenge_supported = 1
-  @client.puts "join_server #{nickname} #{chat_supported} #{challenge_supported}"
+require 'uri'
+
+Given(/^I have joined the server using the nickname "(.*?)"$/) do |nickname|
+  step %Q[I use the nickname "#{nickname}"]
+  step "I should receive a message which indicates whether the server supports chat"
+  step "I should receive a message which indicates whether the server supports challenge"
+end
+
+When(/^I use the nickname "(.+)"$/) do |nickname|
+  join_server(@client, nickname, true, true)
+end
+
+Then(/^I should receive a message which indicates whether the server supports (chat|challenge)$/) do |capability|
+  @client.gets.should match(/notify_#{capability}_support (0|1)/i)
+end
+
+Given(/^the nickname "(.+)" is already taken$/) do |nickname|
+  client = TCPSocket.open('localhost', @port)
+  join_server(client, nickname, true, true)
+end
+
+Then(/^I should receive a message which indicates that the nickname "(.+)" is already taken$/) do |nickname|
+  message = URI.encode(%Q[nickname "#{nickname}" is already taken])
+  @client.gets.should match(/#{message}/i)
+end
+
+def join_server(client, nickname, chat_supported, challenge_supported)
+  client.puts "join_server #{nickname} #{chat_supported ? 1 : 0} #{challenge_supported ? 1 : 0}"
 end
