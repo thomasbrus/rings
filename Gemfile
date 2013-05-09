@@ -8,6 +8,7 @@ end
 group :development do
   gem 'guard', '~> 1.6.2'
   gem 'guard-rspec', '~> 2.5.1'
+  gem 'guard-cucumber', '~> 1.4.0'
   gem 'rb-fsevent', '~> 0.9.3'
 end
 
