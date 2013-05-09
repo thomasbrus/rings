@@ -27,7 +27,3 @@ Then(/^I should receive a message which indicates that the nickname "(.+)" is al
   message = URI.encode(%Q[nickname "#{nickname}" is already taken])
   @client.gets.should match(/#{message}/i)
 end
-
-def join_server(client, nickname, chat_supported, challenge_supported)
-  client.puts "join_server #{nickname} #{chat_supported ? 1 : 0} #{challenge_supported ? 1 : 0}"
-end

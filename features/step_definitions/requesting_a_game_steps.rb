@@ -11,7 +11,3 @@ end
 Then(/a game for two players should be started/) do
   @client.gets.should match(/start_two_player_game/)
 end
-
-def request_game(client, number_of_players)
-  client.puts "request_game #{number_of_players}"
-end

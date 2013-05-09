@@ -20,3 +20,18 @@ After do
   @server.close
   @server_thread.kill
 end
+
+class CustomWorld
+  def request_game(client, number_of_players)
+    client.puts "request_game #{number_of_players}"
+  end
+
+  def join_server(client, nickname, chat_supported, challenge_supported)
+    client.puts "join_server #{nickname} #{chat_supported ? 1 : 0} #{challenge_supported ? 1 : 0}"
+  end
+end
+
+World do
+  CustomWorld.new
+end
+

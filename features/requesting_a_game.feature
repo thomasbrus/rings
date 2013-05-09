@@ -21,9 +21,5 @@ Feature: Requesting a game
   Scenario: Requesting a game for too few players
     Given I have joined the server
     When I request a game for 1 player
-    Then I should receive an error message
-
-  
-  
-  
+    Then I should receive an error message 
   
