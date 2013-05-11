@@ -48,7 +48,7 @@ module Rings
 
       private
 
-      def setup_game players
+      def setup_game(players)
         x = [1,2,3].sample
         y = [1,2,3].sample
         game = GamesFactory.create(x, y, players)
@@ -61,7 +61,7 @@ module Rings
         end
       end
 
-      def start_game_command number_of_players
+      def start_game_command(number_of_players)
         case number_of_players
         when 2 then :start_two_player_game
         when 3 then :start_three_player_game

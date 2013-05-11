@@ -6,7 +6,7 @@ module Rings
     extend Forwardable
     def_delegators :@session, :server, :client_socket
 
-    def initialize session
+    def initialize(session)
       @session = session
     end
 

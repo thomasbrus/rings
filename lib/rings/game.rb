@@ -12,7 +12,7 @@ module Rings
     MIN_PLAYERS = 2
     MAX_PLAYERS = 4
 
-    def initialize x, y, players
+    def initialize(x, y, players)
       @board = Board.new
       @players = players
       @current_turn = 0
@@ -24,11 +24,11 @@ module Rings
       @players[@current_turn]
     end
 
-    def is_in_turn? player
+    def is_in_turn?(player)
       current_player == player
     end
 
-    def take_turn player, piece, x, y
+    def take_turn(player, piece, x, y)
       raise ArgumentError, "It's not this player's turn!" unless is_in_turn?(player)
       raise ArgumentError, "Cannot place this piece here." unless can_place_piece?(piece, x, y)
 
@@ -60,14 +60,14 @@ module Rings
 
     private
 
-    def place_starting_pieces x, y
+    def place_starting_pieces(x, y)
       @board.place(LargeRingPiece.new(:purple), x, y)
       @board.place(MediumRingPiece.new(:yellow), x, y)
       @board.place(SmallRingPiece.new(:green), x, y)
       @board.place(ExtraSmallRingPiece.new(:red), x, y)
     end
 
-    def can_place_piece? piece, x, y
+    def can_place_piece?(piece, x, y)
       return @board.can_place?(piece, x, y) &&
         (!piece.solid? || !@board.has_adjacent_piece_of_color?(piece.color, x, y)) &&
         (@board.has_adjacent_piece_of_color?(piece.color, x, y) ||
@@ -78,7 +78,7 @@ module Rings
       raise NotImplementedError, "Sub class must implement this method"
     end
 
-    def find_player_by_color color
+    def find_player_by_color(color)
       raise NotImplementedError, "Sub class must implement this method"
     end
 

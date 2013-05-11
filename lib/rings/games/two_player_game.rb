@@ -5,7 +5,7 @@ require 'rings/pieces_factory'
 module Rings
   module Games
     class TwoPlayerGame < Game
-      def initialize x, y, first_player, second_player
+      def initialize(x, y, first_player, second_player)
         super(x, y, [first_player, second_player])
       end
 
@@ -24,7 +24,7 @@ module Rings
       end
     end
 
-    def find_player_by_color color
+    def find_player_by_color(color)
       case color
       when Piece::ALLOWED_COLORS[0], Piece::ALLOWED_COLORS[1]
         @players[0]

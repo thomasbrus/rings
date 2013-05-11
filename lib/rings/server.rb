@@ -9,20 +9,20 @@ module Rings
 
     extend Forwardable
 
-    def initialize port = 4567, logger = Logger.new(STDOUT)
+    def initialize(port = 4567, logger = Logger.new(STDOUT))
       super port
       @port = port
       @connected_clients = []
       @logger = logger
     end
 
-    def with_connected_socket client_socket, &block
+    def with_connected_socket(client_socket, &block)
       @connected_clients.push client_socket
       block.call
       @connected_clients.delete client_socket
     end
 
-    def nickname_taken? name
+    def nickname_taken?(name)
       @connected_clients.map(&:nickname).include?(name)
     end
 

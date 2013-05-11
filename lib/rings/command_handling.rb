@@ -34,7 +34,7 @@ module Rings
         (@parsed_arguments || {})[key]
       end
 
-      def parse_arguments arguments
+      def parse_arguments(arguments)
         options = self.class.argument_options
 
         unless arguments.count == options.count

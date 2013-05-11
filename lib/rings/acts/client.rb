@@ -25,7 +25,7 @@ module Rings
           @challenge_supported
         end
 
-        def send_command command, *args
+        def send_command(command, *args)
           encoded_args = args.map { |arg| URI.encode(arg.to_s) }
           puts [command, *encoded_args].join(' ')
         end

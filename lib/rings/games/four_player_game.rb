@@ -3,7 +3,7 @@ require 'rings/game'
 module Rings
   module Games
     class FourPlayerGame < Game
-      def initialize x, y, first_player, second_player, third_player, fourth_player
+      def initialize(x, y, first_player, second_player, third_player, fourth_player)
         super(x, y, [first_player, second_player, third_player, fourth_player])
       end
 
@@ -15,7 +15,7 @@ module Rings
         end
       end
 
-      def find_player_by_color color
+      def find_player_by_color(color)
         @players[Piece::ALLOWED_COLORS.index(color)]
       end
     end

@@ -41,11 +41,11 @@ module Rings
 
       private
 
-      def send_chat_support_notification chat_supported
+      def send_chat_support_notification(chat_supported)
         client_socket.send_command :notify_chat_support, chat_supported ? 1 : 0
       end
 
-      def send_challenge_support_notification challenge_supported
+      def send_challenge_support_notification(challenge_supported)
         client_socket.send_command :notify_challenge_support, challenge_supported ? 1 : 0
       end
     end

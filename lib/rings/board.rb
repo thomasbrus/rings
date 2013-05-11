@@ -23,30 +23,30 @@ module Rings
       @fields = Matrix.build(SIZE, SIZE) { |x, y| Field.new x, y }
     end
 
-    def place piece, x, y
+    def place(piece, x, y)
       raise ArgumentError, "Cannot place this piece here." unless can_place?(piece, x, y)
       @fields[x, y].place piece
     end
 
-    def can_place? piece, x, y
+    def can_place?(piece, x, y)
       return (0...SIZE).include?(x) && (0...SIZE).include?(y) && @fields[x, y].can_place?(piece)
     end
 
-    def has_piece_of_color? color, x, y
+    def has_piece_of_color?(color, x, y)
       @fields[x, y].has_piece_of_color? color
     end
 
-    def has_adjacent_solid_piece_of_color? color, x, y
+    def has_adjacent_solid_piece_of_color?(color, x, y)
       adjacent_fields(x, y).any? { |f| f.has_solid_piece_of_color?(color) }
     end
 
-    def has_adjacent_piece_of_color? color, x, y
+    def has_adjacent_piece_of_color?(color, x, y)
       adjacent_fields(x, y).any? { |f| f.has_piece_of_color?(color) }
     end
 
     private
 
-    def adjacent_fields x, y
+    def adjacent_fields(x, y)
       @fields.select do |field|
         horizontal_distance = (x - field.x).abs
         vertical_distance = (y - field.y).abs

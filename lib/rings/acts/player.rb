@@ -20,18 +20,18 @@ module Rings
           !game.nil?
         end
 
-        def take_turn piece, x, y
+        def take_turn(piece, x, y)
           game.take_turn(self, piece, x, y)
         end
 
-        def remove_piece_from_arsenal piece
+        def remove_piece_from_arsenal(piece)
           unless can_remove_piece_from_arsenal?(piece)
             raise ArgumentError, "Cannot remove this piece from the arsenal"
           end
           arsenal.delete_at(arsenal.index(piece))
         end
 
-        def can_remove_piece_from_arsenal? piece
+        def can_remove_piece_from_arsenal?(piece)
           arsenal.include?(piece)
         end
       end

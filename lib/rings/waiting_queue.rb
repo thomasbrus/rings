@@ -15,7 +15,7 @@ module Rings
       @@queues[capacity] ||= new capacity
     end
 
-    def initialize capacity
+    def initialize(capacity)
       @items = []
       @capacity = capacity
     end
@@ -24,7 +24,7 @@ module Rings
       @@queues.values.each { |queue| queue.dequeue item }
     end
 
-    def enqueue item
+    def enqueue(item)
       unless @items.include? item
         raise CapacityReachedError, "Cannot enqueue another item, capacity is reached" if ready?
         @items.push(item)

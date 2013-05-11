@@ -85,7 +85,7 @@ module Rings
 
     private
 
-    def parse_line line
+    def parse_line(line)
       args = line.chomp.split(/\s+/)
       command = args.shift
       handle_incoming_command command, args
@@ -101,7 +101,7 @@ module Rings
         CommandHandlers::SendMessageCommandHandler ]
     end
 
-    def handle_incoming_command command, arguments
+    def handle_incoming_command(command, arguments)
       fail = ->{ raise CommandHandling::CommandError, "Unknown command: #{command}" }
 
       command_handler_klass = command_handlers.find(fail) do |command_handler_klass|
