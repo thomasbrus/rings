@@ -1,5 +1,5 @@
 class MockBlock
   def to_proc
-    lambda { |*args| call(*args) }
+    ->(*args) { call(*args) }
   end
 end

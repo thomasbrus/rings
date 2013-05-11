@@ -2,8 +2,15 @@ require 'uri'
 
 module Rings
   module CommandHandling
-    ARGUMENT_TYPES = [:integer, :boolean, :string].freeze
-    private_constant :ARGUMENT_TYPES
+    ARGUMENT_TYPES = [:integer, :boolean, :string].freeze 
+    ARGUMENT_TYPE_REGEXES = { integer: /[0-9]+/, boolean: /0|1/, string: /[^\s]+/ } 
+    ARGUMENT_TYPE_METHODS = {
+      integer: :to_i,
+      boolean: ->(value) { value.to_i == 1 },
+      string: ->(value) { URI.decode(value) }
+    }
+
+    private_constant :ARGUMENT_TYPES, :ARGUMENT_TYPE_REGEXES, :ARGUMENT_TYPE_METHODS
 
     class CommandError < RuntimeError; end
 
@@ -36,31 +43,16 @@ module Rings
         end
         
         parsed_values = options.values.zip(options.keys, arguments).map do |type, key, value|
-          if (match_data = value.match(regex_by_argument_type(type))).nil? || value != match_data.to_s
+          match_data = value.match(ARGUMENT_TYPE_REGEXES[type])
+
+          if (match_data.nil? || value != match_data.to_s)
             raise CommandError, "Could not parse as #{type}: #{value}"
           end
-          method_by_argument_type(type).to_proc.(value)
+
+          ARGUMENT_TYPE_METHODS[type].to_proc.(value)
         end
 
         @parsed_arguments = Hash[*options.keys.zip(parsed_values).flatten]
-      end
-
-      private
-
-      def regex_by_argument_type type
-        case type
-        when :integer; /[0-9]+/
-        when :boolean; /0|1/
-        when :string; /[^\s]+/
-        end
-      end
-
-      def method_by_argument_type type
-        case type
-        when :integer; :to_i
-        when :boolean; ->(value) { value.to_i == 1 }
-        when :string; ->(value) { URI.decode value }
-        end
       end
     end
   end

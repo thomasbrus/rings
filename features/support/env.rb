@@ -1,9 +1,11 @@
 require 'rings/runner'
 require 'rings/server'
+require 'uri'
 
 Before do
   @port = 5678  
-
+  @nickname = "thomasbrus"
+  
   Thread.abort_on_exception = true
   
   @server_thread = Thread.start do
@@ -29,9 +31,12 @@ class CustomWorld
   def join_server(client, nickname, chat_supported, challenge_supported)
     client.puts "join_server #{nickname} #{chat_supported ? 1 : 0} #{challenge_supported ? 1 : 0}"
   end
+
+  def send_message(client, message)
+    client.puts "send_message #{URI.encode(message)}"
+  end
 end
 
 World do
   CustomWorld.new
 end
-

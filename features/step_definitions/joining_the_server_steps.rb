@@ -1,7 +1,7 @@
 require 'uri'
 
 Given(/^I have joined the server$/) do
-  step %Q[I have joined the server using the nickname "thomasbrus"]
+  step %Q[I have joined the server using the nickname "#{@nickname}"]
 end
 
 Given(/^I have joined the server using the nickname "(.+)"$/) do |nickname|

@@ -44,6 +44,7 @@ module Rings
 
       private
 
+      # TODO: Move to Acts::Players (first check if in game)
       def notify_all_players command, args
         client_socket.game.each_player do |player|
           player.send_command(command, *args)
