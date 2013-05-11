@@ -12,7 +12,7 @@ describe Acts::Player do
     it { should respond_to :game= }
     it { should respond_to :arsenal }
     it { should respond_to :arsenal= }
-    
+
     context "when in game" do
       let(:dummy_game) { double :game }
       before(:each) { subject.game = dummy_game }

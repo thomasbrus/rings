@@ -25,7 +25,7 @@ module Rings
     def has_piece_of_color? color
       @pieces.map(&:color).include? color
     end
-    
+
     def has_solid_piece?
       @pieces.any? { |piece| piece.solid? }
     end

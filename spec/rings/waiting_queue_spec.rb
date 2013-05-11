@@ -7,7 +7,7 @@ describe WaitingQueue do
   describe ".instance_for" do
     context "when called multiple times" do
       it "returns the exact same queue" do
-        WaitingQueue.instance_for(2).should be_equal WaitingQueue.instance_for(2) 
+        WaitingQueue.instance_for(2).should be_equal WaitingQueue.instance_for(2)
       end
     end
   end
@@ -34,7 +34,7 @@ describe WaitingQueue do
         WaitingQueue.withdraw(item)
       end
     end
-    
+
   end
 
   describe "#enqueue" do
@@ -76,7 +76,7 @@ describe WaitingQueue do
       it "raises an error" do
         error = WaitingQueue::CapacityReachedError
         message = /cannot enqueue another item/i
-        expect { subject.enqueue third_item }.to raise_error error, message      
+        expect { subject.enqueue third_item }.to raise_error error, message
       end
     end
 
@@ -90,7 +90,7 @@ describe WaitingQueue do
     end
   end
 
-  describe "#ready?" do    
+  describe "#ready?" do
     let(:first_item) { double :item }
     let(:second_item) { double :item }
     let(:third_item) { double :item }
@@ -118,7 +118,7 @@ describe WaitingQueue do
         subject.enqueue first_item
         subject.enqueue second_item
       end
-      
+
       it { should be_ready }
     end
   end

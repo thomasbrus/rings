@@ -6,9 +6,9 @@ require 'logger/colors'
 module Rings
   class Server < TCPServer
     attr_reader :port, :logger
-    
+
     extend Forwardable
-        
+
     def initialize port = 4567, logger = Logger.new(STDOUT)
       super port
       @port = port

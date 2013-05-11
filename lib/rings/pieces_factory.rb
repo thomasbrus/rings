@@ -37,7 +37,7 @@ module Rings
         arsenal << Rings::Pieces::LargeRingPiece.new(shared_color)
         arsenal << Rings::Pieces::MediumRingPiece.new(shared_color)
         arsenal << Rings::Pieces::SmallRingPiece.new(shared_color)
-        arsenal << Rings::Pieces::ExtraSmallRingPiece.new(shared_color)        
+        arsenal << Rings::Pieces::ExtraSmallRingPiece.new(shared_color)
       end
 
       arsenal

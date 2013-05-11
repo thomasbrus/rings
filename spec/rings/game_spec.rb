@@ -6,23 +6,23 @@ require 'rings/games/two_player_game'
 require 'support/acts_as_player'
 
 describe Game do
-  %w[first second].each do |nth|      
+  %w[first second].each do |nth|
     let("#{nth}_player") { Player.new }
   end
 
-  subject { Games::TwoPlayerGame.new(1, 1, first_player, second_player) }  
+  subject { Games::TwoPlayerGame.new(1, 1, first_player, second_player) }
   let(:piece) { Pieces::SmallRingPiece.new(:red) }
-  
+
   describe ".new" do
     context "given no players" do
       it "raises an error" do
-        
+
       end
     end
 
     context "given invalid x and y coordinates" do
       it "raises an error" do
-        
+
       end
     end
   end
@@ -33,26 +33,26 @@ describe Game do
       specify { subject.current_player.should == first_player }
     end
   end
-  
+
   describe "#is_in_turn?" do
     subject { Games::TwoPlayerGame.new(1, 1, first_player, second_player) }
-   
+
     context "when in turn" do
-      specify { subject.is_in_turn?(first_player).should be_true }      
+      specify { subject.is_in_turn?(first_player).should be_true }
     end
-    
-    context "when not in turn" do      
+
+    context "when not in turn" do
       specify { subject.is_in_turn?(second_player).should be_false }
     end
   end
 
   describe "#take_turn" do
-    context "when it's not this players turn" do      
+    context "when it's not this players turn" do
       it "raises an error" do
         expect {
           subject.take_turn(second_player, piece, 1, 2)
         }.to raise_error ArgumentError, /not this player's turn/i
-      end 
+      end
     end
 
     context "when it cannot place the piece" do
@@ -71,12 +71,12 @@ describe Game do
     end
 
     context "when the game is not over" do
-       
+
     end
   end
 
   describe "#winner" do
-    
+
   end
 
 end

@@ -3,17 +3,17 @@ require 'rings/server'
 require 'uri'
 
 Before do
-  @port = 5678  
+  @port = 5678
   @nickname = "thomasbrus"
-  
+
   Thread.abort_on_exception = true
-  
+
   @server_thread = Thread.start do
-    @server = Rings::Server.new(@port) 
+    @server = Rings::Server.new(@port)
     @server.logger.level = Logger::ERROR
     Rings::Runner.run(@server)
   end
-  
+
   @client = TCPSocket.open('localhost', @port)
 end
 

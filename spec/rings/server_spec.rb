@@ -21,7 +21,7 @@ describe Server do
     second_client.stub(:nickname).and_return('Second client')
   end
 
-  describe "#with_connected_socket" do  
+  describe "#with_connected_socket" do
     context "when given a block" do
       let(:block) { MockBlock.new }
 
@@ -50,7 +50,7 @@ describe Server do
         specify do
           server.with_connected_socket(first_client) {}
           server.nickname_taken?('First client').should be_false
-        end          
+        end
       end
     end
   end

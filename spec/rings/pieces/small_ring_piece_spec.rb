@@ -9,7 +9,7 @@ describe Pieces::SmallRingPiece do
     end
 
     describe "#size" do
-      specify { subject.size.should == :small }  
+      specify { subject.size.should == :small }
     end
 
     describe "#type" do

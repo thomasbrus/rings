@@ -52,7 +52,7 @@ describe PiecesFactory do
     end
   end
 
-  describe ".create_arsenal" do    
+  describe ".create_arsenal" do
     context "when creating an arsenal of red pieces" do
       let(:arsenal) { PiecesFactory.create_arsenal(:red) }
 
@@ -82,7 +82,7 @@ describe PiecesFactory do
           Rings::Pieces::LargeRingPiece.new(:yellow),
           Rings::Pieces::MediumRingPiece.new(:yellow),
           Rings::Pieces::SmallRingPiece.new(:yellow),
-          Rings::Pieces::ExtraSmallRingPiece.new(:yellow)        
+          Rings::Pieces::ExtraSmallRingPiece.new(:yellow)
         ]
       end
     end

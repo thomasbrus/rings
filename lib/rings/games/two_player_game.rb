@@ -11,7 +11,7 @@ module Rings
 
       private
 
-      def assign_arsenal_to_players        
+      def assign_arsenal_to_players
         @players[0].arsenal = [
           *PiecesFactory.create_arsenal(Piece::ALLOWED_COLORS[0]),
           *PiecesFactory.create_arsenal(Piece::ALLOWED_COLORS[1]),

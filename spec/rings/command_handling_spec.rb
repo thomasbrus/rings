@@ -12,7 +12,7 @@ describe CommandHandling do
           subject.class.send :has_arguments, arg: :something
         }.to raise_error CommandHandling::CommandError, /invalid argument options/i
       end
-      
+
       it { should_not respond_to :parse_arguments }
     end
 
@@ -25,8 +25,8 @@ describe CommandHandling do
       describe "#arguments" do
         context "when no arguments are parsed" do
           context "given an invalid argument name" do
-            specify { subject.arguments(:something).should be_nil }  
-          end          
+            specify { subject.arguments(:something).should be_nil }
+          end
         end
 
         context "when valid arguments are parsed" do
@@ -59,7 +59,7 @@ describe CommandHandling do
 
         context "given incorrectly formatted arguments" do
           it "raises an error" do
-            expect {            
+            expect {
               subject.parse_arguments ["thomas", "-21", "4"]
             }.to raise_error CommandHandling::CommandError, /could not parse/i
           end
@@ -69,7 +69,7 @@ describe CommandHandling do
           it "parses integer arguments correctly" do
             subject.class.send :has_arguments, age: :integer
             parsed_arguments = subject.parse_arguments ["21"]
-            parsed_arguments[:age].should == 21   
+            parsed_arguments[:age].should == 21
           end
 
           it "parses boolean arguments correctly" do

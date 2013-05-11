@@ -19,7 +19,7 @@ module Rings
 
       def self.command
         'request_game'
-      end      
+      end
 
       def handle_command
         unless arguments(:number_of_players).between?(Game::MIN_PLAYERS, Game::MAX_PLAYERS)
@@ -38,7 +38,7 @@ module Rings
           sessions.each { |session| WaitingQueue.withdraw(session) }
         end
 
-      rescue StateMachine::InvalidTransition        
+      rescue StateMachine::InvalidTransition
         message = "Request game command not allowed. "
         message << "It's not allowed to request a game "
         message << "before joining the server or when already in game."
@@ -65,7 +65,7 @@ module Rings
         case number_of_players
         when 2 then :start_two_player_game
         when 3 then :start_three_player_game
-        when 4 then :start_four_player_game 
+        when 4 then :start_four_player_game
         end
       end
     end

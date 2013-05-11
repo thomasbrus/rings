@@ -12,7 +12,7 @@ Given(/^I am in a four player game, with two players that support chat$/) do
   join_server(@clients[1], "client_1", true, true)
   join_server(@clients[2], "client_2", false, true)
   join_server(@clients[3], "client_3", false, true)
- 
+
   @clients.map { |client| request_game(client, 4) }
   @clients.map { |client| 3.times { client.gets } }
 end

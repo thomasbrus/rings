@@ -19,7 +19,7 @@ module Rings
       place_starting_pieces(x, y)
       assign_arsenal_to_players
     end
-  
+
     def current_player
       @players[@current_turn]
     end
@@ -28,10 +28,10 @@ module Rings
       current_player == player
     end
 
-    def take_turn player, piece, x, y    
+    def take_turn player, piece, x, y
       raise ArgumentError, "It's not this player's turn!" unless is_in_turn?(player)
-      raise ArgumentError, "Cannot place this piece here." unless can_place_piece?(piece, x, y)    
-      
+      raise ArgumentError, "Cannot place this piece here." unless can_place_piece?(piece, x, y)
+
       player.remove_piece_from_arsenal(piece)
       @board.place(piece, x, y)
       @current_turn = (@current_turn + 1) % @players.size
@@ -59,7 +59,7 @@ module Rings
     end
 
     private
-    
+
     def place_starting_pieces x, y
       @board.place(LargeRingPiece.new(:purple), x, y)
       @board.place(MediumRingPiece.new(:yellow), x, y)
@@ -69,7 +69,7 @@ module Rings
 
     def can_place_piece? piece, x, y
       return @board.can_place?(piece, x, y) &&
-        (!piece.solid? || !@board.has_adjacent_piece_of_color?(piece.color, x, y)) &&        
+        (!piece.solid? || !@board.has_adjacent_piece_of_color?(piece.color, x, y)) &&
         (@board.has_adjacent_piece_of_color?(piece.color, x, y) ||
           @board.has_piece_of_color?(piece.color, x ,y))
     end
@@ -82,7 +82,7 @@ module Rings
       raise NotImplementedError, "Sub class must implement this method"
     end
 
-    def territory_winners      
+    def territory_winners
       # Collect the winner (if any) of each territory. Fields occupied by
       # a solid piece do not affect the number of won territories.
       @board.each_field.reject(&:has_solid_piece?).collect do |field|

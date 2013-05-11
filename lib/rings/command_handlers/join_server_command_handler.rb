@@ -22,7 +22,7 @@ module Rings
         if server.nickname_taken? arguments(:nickname)
           raise CommandError, %Q[Nickname "#{arguments(:nickname)}" is already taken.]
         end
- 
+
         @session.join_server!
 
         client_socket.nickname = arguments(:nickname)

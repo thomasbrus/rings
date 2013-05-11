@@ -9,7 +9,7 @@ describe Pieces::LargeSolidPiece do
     end
 
     describe "#size" do
-      specify { subject.size.should == :large }  
+      specify { subject.size.should == :large }
     end
 
     describe "#type" do

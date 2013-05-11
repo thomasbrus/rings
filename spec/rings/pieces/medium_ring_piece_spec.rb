@@ -9,7 +9,7 @@ describe Pieces::MediumRingPiece do
     end
 
     describe "#size" do
-      specify { subject.size.should == :medium }  
+      specify { subject.size.should == :medium }
     end
 
     describe "#type" do

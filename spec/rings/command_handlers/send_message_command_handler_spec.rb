@@ -11,7 +11,7 @@ describe CommandHandlers::SendMessageCommandHandler do
 
     describe "#handle_command" do
       subject { described_class.new(session, "hello") }
-      
+
       before(:each) do
         session.stub(:send_message!)
         session.stub(:can_send_message?).and_return(true)
@@ -22,11 +22,11 @@ describe CommandHandlers::SendMessageCommandHandler do
         let(:first_recipient) { double :recipient }
         let(:second_recipient) { double :recipient }
 
-        before(:each) do          
+        before(:each) do
           first_recipient.stub(:arsenal=)
           second_recipient.stub(:arsenal=)
           sender.stub(:nickname).and_return("thomas")
-          
+
           game = Games::TwoPlayerGame.new(1, 1, first_recipient, second_recipient)
           client_socket.stub(:game).and_return(game)
 
@@ -49,7 +49,7 @@ describe CommandHandlers::SendMessageCommandHandler do
       #     message = /chat command not allowed/i
       #     client_socket.should_receive(:send_command).with(:error, message)
       #     subject.handle_command
-      #   end        
+      #   end
       end
     end
   end

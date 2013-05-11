@@ -20,7 +20,7 @@ describe Board do
           board.can_place?(piece, 1, 1)
         end
       end
-      
+
       context "when placed outside of the board" do
         it "cannot be placed" do
           board.can_place?(piece, -1, 0).should be_false

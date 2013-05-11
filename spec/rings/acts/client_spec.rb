@@ -7,7 +7,7 @@ describe Acts::Client do
 
   describe ".acts_as_client" do
     before(:each) { subject.class.send :acts_as_client }
-    
+
     it { should respond_to :nickname }
     it { should respond_to :nickname= }
 
@@ -17,7 +17,7 @@ describe Acts::Client do
         specify { subject.chat_supported?.should be_true }
       end
     end
-    
+
     describe "challenge_supported?" do
       context "when it supports challenge" do
         before(:each) { subject.challenge_supported = true }
@@ -25,7 +25,7 @@ describe Acts::Client do
       end
     end
 
-    describe "#send_command" do      
+    describe "#send_command" do
       it "encodes the arguments" do
         subject.should_receive(:puts).with("send_message hello%20there")
         subject.send_command(:send_message, "hello there")

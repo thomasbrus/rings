@@ -9,7 +9,7 @@ require 'support/acts_as_player'
 
 describe GamesFactory do
   describe ".create" do
-    %w[first second third fourth].each do |nth|      
+    %w[first second third fourth].each do |nth|
       let("#{nth}_player") { Player.new }
     end
 
@@ -42,7 +42,7 @@ describe GamesFactory do
         expect {
           GamesFactory.create(2, 2, Array.new(5))
         }.to raise_error ArgumentError, /invalid number of players/i
-      end    
+      end
     end
   end
 end

@@ -16,7 +16,7 @@ module Rings
         Thread.abort_on_exception = true
         Thread.start(server.accept) do |client_socket|
           # TODO: Use DelegateClass (http://pivotallabs.com/delegateclass-rocks-my-world/)
-          # Like so: Client.new(client_socket)      
+          # Like so: Client.new(client_socket)
           client_socket.class.send :include, Rings::Acts::Client
           client_socket.class.send :include, Rings::Acts::Player
           client_socket.class.send :acts_as_client

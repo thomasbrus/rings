@@ -26,7 +26,7 @@ describe Session do
           client_socket.stub(:gets).and_return("some_unknown_command", nil)
           client_socket.stub(:send_command)
         end
-        
+
         it "sends the error message to the client" do
           message = /unknown command/i
           client_socket.should_receive(:send_command).with(:error, message)
@@ -99,7 +99,7 @@ describe Session do
       before(:each) { session.join_server! }
 
       it "can perform the 'request game' event" do
-        session.can_request_game?.should be_true          
+        session.can_request_game?.should be_true
       end
 
       context "when performing the 'request game' event" do
@@ -115,9 +115,9 @@ describe Session do
   describe "#start_game" do
     context "when in the 'joined server' state" do
       before(:each) { session.join_server! }
-      
+
       it "can perform the 'start game' event" do
-        session.can_start_game?.should be_true          
+        session.can_start_game?.should be_true
       end
 
       context "when performing the 'start game' event" do
@@ -136,9 +136,9 @@ describe Session do
         session.join_server!
         session.start_game!
       end
-      
+
       it "can perform the 'send message' event" do
-        session.can_send_message?.should be_true          
+        session.can_send_message?.should be_true
       end
 
       context "when performing the 'send message' event" do
@@ -157,9 +157,9 @@ describe Session do
         session.join_server!
         session.start_game!
       end
-      
+
       it "can perform the 'place piece' event" do
-        session.can_place_piece?.should be_true          
+        session.can_place_piece?.should be_true
       end
 
       context "when performing the 'place piece' event" do
@@ -178,9 +178,9 @@ describe Session do
         session.join_server!
         session.start_game!
       end
-      
+
       it "can perform the 'end game' event" do
-        session.can_end_game?.should be_true          
+        session.can_end_game?.should be_true
       end
 
       context "when performing the 'end game' event" do

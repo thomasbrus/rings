@@ -5,12 +5,12 @@ module Rings
     extend Forwardable
     def_delegators :@items, :each
     def_delegator :@items, :delete, :dequeue
-  
+
     class CapacityReachedError < RuntimeError; end
 
     private_class_method :new
     @@queues = {}
-    
+
     def self.instance_for capacity
       @@queues[capacity] ||= new capacity
     end

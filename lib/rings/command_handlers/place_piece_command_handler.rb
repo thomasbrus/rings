@@ -8,7 +8,7 @@ module Rings
     class PlacePieceCommandHandler < CommandHandler
       include CommandHandling
       has_arguments type: :string, color: :string, x: :integer, y: :integer
-      
+
       def initialize(session, *args)
         super session
         parse_arguments args
@@ -27,7 +27,7 @@ module Rings
         end
 
         @session.place_piece!
-          
+
         args = [arguments(:type), arguments(:color), arguments(:x), arguments(:y)]
         notify_all_players(:place_piece, args)
 

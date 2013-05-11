@@ -9,7 +9,7 @@ include Rings::Pieces
 
 describe Field do
   subject { Field.new 2, 4 }
-  
+
   describe "#place" do
     let(:piece) { LargeSolidPiece.new(:purple) }
 
@@ -45,21 +45,21 @@ describe Field do
         subject.can_place?(SmallRingPiece.new(:yellow))
       end
     end
-    
+
   end
 
   describe "#has_piece_of_size?" do
     context "when the field is empty" do
-      specify { should_not have_piece_of_size(:large) }  
+      specify { should_not have_piece_of_size(:large) }
     end
 
     context "when a large piece is placed" do
       before(:each) { subject.place LargeRingPiece.new(:red) }
-      
+
       it "has a large piece" do
         should have_piece_of_size(:large)
       end
-      
+
       it "does not have a small piece" do
         should_not have_piece_of_size(:small)
       end
@@ -73,7 +73,7 @@ describe Field do
 
     context "when a yellow piece is placed" do
       before(:each) { subject.place SmallRingPiece.new(:yellow) }
-      
+
       it "has a yellow piece" do
         should have_piece_of_color(:yellow)
       end

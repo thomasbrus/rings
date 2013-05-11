@@ -44,7 +44,7 @@ module Rings
 
       after_transition on: :request_game do |session|
         message = "#{session.client_socket.inspect} requested a game"
-    
+
         session.server.logger.info message.bold
       end
 
@@ -71,12 +71,12 @@ module Rings
       @client_socket = client_socket
 
       initialize_state_machines
-      
+
       server.with_connected_socket(client_socket) do
         while line = client_socket.gets
           parse_line(line)
         end
-      end      
+      end
     rescue Errno::ECONNRESET => e
       server.logger.info e.message
     ensure
@@ -103,7 +103,7 @@ module Rings
 
     def handle_incoming_command command, arguments
       fail = ->{ raise CommandHandling::CommandError, "Unknown command: #{command}" }
-      
+
       command_handler_klass = command_handlers.find(fail) do |command_handler_klass|
         command_handler_klass.command == command
       end

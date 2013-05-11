@@ -66,7 +66,7 @@ describe CommandHandlers::JoinServerCommandHandler do
         #   message = /join command not allowed/i
         #   client_socket.should_receive(:send_command).with(:error, message)
         #   subject.handle_command
-        # end        
+        # end
       end
     end
   end

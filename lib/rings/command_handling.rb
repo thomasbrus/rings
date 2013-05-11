@@ -2,8 +2,8 @@ require 'uri'
 
 module Rings
   module CommandHandling
-    ARGUMENT_TYPES = [:integer, :boolean, :string].freeze 
-    ARGUMENT_TYPE_REGEXES = { integer: /[0-9]+/, boolean: /0|1/, string: /[^\s]+/ } 
+    ARGUMENT_TYPES = [:integer, :boolean, :string].freeze
+    ARGUMENT_TYPE_REGEXES = { integer: /[0-9]+/, boolean: /0|1/, string: /[^\s]+/ }
     ARGUMENT_TYPE_METHODS = {
       integer: :to_i,
       boolean: ->(value) { value.to_i == 1 },
@@ -28,7 +28,7 @@ module Rings
         send :include, InstanceMethods
       end
     end
-  
+
     module InstanceMethods
       def arguments(key)
         (@parsed_arguments || {})[key]
@@ -36,12 +36,12 @@ module Rings
 
       def parse_arguments arguments
         options = self.class.argument_options
-        
+
         unless arguments.count == options.count
           raise CommandError, "Wrong number of arguments given " +
             " (#{arguments.count} for #{options.count})."
         end
-        
+
         parsed_values = options.values.zip(options.keys, arguments).map do |type, key, value|
           match_data = value.match(ARGUMENT_TYPE_REGEXES[type])
 

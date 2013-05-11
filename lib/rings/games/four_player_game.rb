@@ -9,9 +9,9 @@ module Rings
 
       private
 
-      def assign_arsenal_to_players        
+      def assign_arsenal_to_players
         Piece::ALLOWED_COLORS.each_with_index do |color, index|
-          @players[index].arsenal = PiecesFactory.create_arsenal(color)          
+          @players[index].arsenal = PiecesFactory.create_arsenal(color)
         end
       end
 

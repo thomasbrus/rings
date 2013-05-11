@@ -23,7 +23,7 @@ describe CommandHandlers::PlacePieceCommandHandler do
         #   message = /place piece command not allowed/i
         #   client_socket.should_receive(:send_command).with(:error, message)
         #   subject.handle_command
-        # end        
+        # end
       end
     end
   end

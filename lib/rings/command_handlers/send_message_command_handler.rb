@@ -27,7 +27,7 @@ module Rings
         recipients.each do |recipient|
           recipient.send_command(:add_message, client_socket.nickname, arguments(:message))
         end
-        
+
       rescue StateMachine::InvalidTransition
         message = "Chat command not allowed. "
         message << "It's only allowed to send chat messages while in game."

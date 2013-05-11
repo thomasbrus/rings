@@ -1,5 +1,5 @@
 module Rings
-  class Piece    
+  class Piece
     ALLOWED_COLORS = [:red, :green, :yellow, :purple].freeze
     attr_reader :color
 

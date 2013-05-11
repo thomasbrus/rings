@@ -16,7 +16,7 @@ module Rings
   class Board
     extend Forwardable
     def_delegator :@fields, :each, :each_field
-    
+
     SIZE = 5
 
     def initialize

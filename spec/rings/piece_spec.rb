@@ -18,12 +18,12 @@ describe Piece do
         expect { subject.solid? }.to raise_error NotImplementedError
       end
     end
-    
+
     describe "#size" do
       before(:each) do
         described_class.any_instance.unstub(:size)
       end
-      
+
       specify do
         expect { subject.size }.to raise_error NotImplementedError
       end

@@ -6,12 +6,12 @@ Feature: Requesting a game
   Scenario: Requesting a two player game
     Given I have joined the server
     And someone has requested a two player game
-    When I request a game for 2 players 
+    When I request a game for 2 players
     Then a game for two players should be started
 
   Scenario: Requesting a game without joining the server
     When I request a game for 2 players
-    Then I should receive an error message  
+    Then I should receive an error message
 
   Scenario: Requesting a game for too many players
     Given I have joined the server
@@ -21,5 +21,4 @@ Feature: Requesting a game
   Scenario: Requesting a game for too few players
     Given I have joined the server
     When I request a game for 1 player
-    Then I should receive an error message 
-  
+    Then I should receive an error message
