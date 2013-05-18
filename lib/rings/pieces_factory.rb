@@ -6,7 +6,7 @@ require 'rings/pieces/small_ring_piece'
 
 module Rings
   module PiecesFactory
-    def self.create type, color
+    def self.create(type, color)
       case type
       when :extra_small_ring_piece
         Rings::Pieces::ExtraSmallRingPiece.new(color)
@@ -19,28 +19,38 @@ module Rings
       when :small_ring_piece
         Rings::Pieces::SmallRingPiece.new(color)
       else
-        raise ArgumentError, %Q[Invalid type: "#{type}"]
+        raise ArgumentError, %[Invalid type: "#{type}"]
       end
     end
 
-    def self.create_arsenal color, shared_color = nil
-      arsenal = [
-        Rings::Pieces::LargeSolidPiece.new(color),
+    def self.create_arsenal(color, shared_color = nil)
+      if shared_color
+        arsenal(color) + shared_arsenal(shared_color)
+      else
+        arsenal(color)
+      end
+    end
+
+    def self.arsenal(color)
+      [ Rings::Pieces::LargeSolidPiece.new(color),
         Rings::Pieces::LargeRingPiece.new(color),
         Rings::Pieces::MediumRingPiece.new(color),
         Rings::Pieces::SmallRingPiece.new(color),
         Rings::Pieces::ExtraSmallRingPiece.new(color)
       ] * 3
-
-      if shared_color
-        arsenal << Rings::Pieces::LargeSolidPiece.new(shared_color)
-        arsenal << Rings::Pieces::LargeRingPiece.new(shared_color)
-        arsenal << Rings::Pieces::MediumRingPiece.new(shared_color)
-        arsenal << Rings::Pieces::SmallRingPiece.new(shared_color)
-        arsenal << Rings::Pieces::ExtraSmallRingPiece.new(shared_color)
-      end
-
-      arsenal
     end
+
+    private_class_method :arsenal
+
+    def self.shared_arsenal(shared_color)
+      [ Rings::Pieces::LargeSolidPiece.new(shared_color),
+        Rings::Pieces::LargeRingPiece.new(shared_color),
+        Rings::Pieces::MediumRingPiece.new(shared_color),
+        Rings::Pieces::SmallRingPiece.new(shared_color),
+        Rings::Pieces::ExtraSmallRingPiece.new(shared_color)
+      ]
+    end
+
+    private_class_method :shared_arsenal
   end
 end
