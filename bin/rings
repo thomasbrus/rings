@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
-require 'rings/runner'
-require 'rings/server'
+require_relative '../lib/rings/runner'
+require_relative '../lib/rings/server'
 
 port = ARGV.first ? ARGV.first.to_i : 4567
 Rings::Runner.run Rings::Server.new(port)

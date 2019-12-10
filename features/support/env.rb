@@ -1,16 +1,20 @@
-require 'rings/runner'
-require 'rings/server'
-require 'uri'
+require_relative '../../rings/runner'
+require_relative '../../rings/server'
+require_relative 'uri'
+
+Thread.abort_on_exception = true
 
 Before do
+  @client.close unless @client.nil?
+  @server.close unless @server.nil?
+  @server_thread.kill unless @server_thread.nil?
+
   @port = 5678
   @nickname = "thomasbrus"
 
-  Thread.abort_on_exception = true
-
   @server_thread = Thread.start do
     @server = Rings::Server.new(@port)
-    @server.logger.level = Logger::ERROR
+    # @server.logger.level = Logger::ERROR
     Rings::Runner.run(@server)
   end
 
@@ -18,9 +22,7 @@ Before do
 end
 
 After do
-  @client.close
-  @server.close
-  @server_thread.kill
+  # puts "Shutting down things" 
 end
 
 class CustomWorld

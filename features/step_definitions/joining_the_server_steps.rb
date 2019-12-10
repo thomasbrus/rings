@@ -1,13 +1,13 @@
 require 'uri'
 
 Given(/^I have joined the server$/) do
-  step %Q[I have joined the server using the nickname "#{@nickname}"]
+  step %[I have joined the server using the nickname "#{@nickname}"]
 end
 
 Given(/^I have joined the server using the nickname "(.+)"$/) do |nickname|
-  step %Q[I use the nickname "#{nickname}"]
-  step %Q[I should receive a message which indicates whether the server supports chat]
-  step %Q[I should receive a message which indicates whether the server supports challenge]
+  step %[I use the nickname "#{nickname}"]
+  step %[I should receive a message which indicates whether the server supports chat]
+  step %[I should receive a message which indicates whether the server supports challenge]
 end
 
 When(/^I use the nickname "(.+)"$/) do |nickname|
@@ -20,10 +20,12 @@ end
 
 Given(/^the nickname "(.+)" is already taken$/) do |nickname|
   client = TCPSocket.open('localhost', @port)
+  puts "Issueing join server command"
   join_server(client, nickname, true, true)
+  client.close
 end
 
 Then(/^I should receive a message which indicates that the nickname "(.+)" is already taken$/) do |nickname|
-  message = URI.encode(%Q[nickname "#{nickname}" is already taken])
+  message = URI.encode(%[nickname "#{nickname}" is already taken])
   @client.gets.should match(/#{message}/i)
 end

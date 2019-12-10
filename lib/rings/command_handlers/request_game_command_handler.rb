@@ -57,7 +57,7 @@ module Rings
           player.game = game
           nicknames = players.map(&:nickname)
           colors = *Piece::ALLOWED_COLORS
-          player.send_command start_game_command(players.count), *nicknames, x, y, *colors
+          player.send_command(start_game_command(players.count), *nicknames, x, y, *colors)
         end
       end
 
