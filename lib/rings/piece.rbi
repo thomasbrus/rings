@@ -1,7 +1,7 @@
 class Rings::Piece
   @color: Symbol
   def color: () -> Symbol
-  def initialize: (Symbol) -> any
+  def initialize: (Symbol) -> void
   def solid?: () -> bool
   def size: () -> Symbol
   def type: () -> Symbol

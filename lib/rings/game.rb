@@ -1,5 +1,4 @@
 require 'forwardable'
-
 require 'rings/board'
 
 module Rings
