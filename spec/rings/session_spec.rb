@@ -69,7 +69,7 @@ describe Session do
         end
 
         it "handles the send message command" do
-          client_socket.stub(:gets).and_return(%q[send_message hello%20there], nil)
+          client_socket.stub(:gets).and_return("send_message hello%20there", nil)
           klass = CommandHandlers::SendMessageCommandHandler
           klass.any_instance.should_receive(:handle_command)
           Session.new(server, client_socket)

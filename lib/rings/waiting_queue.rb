@@ -1,5 +1,9 @@
 require 'forwardable'
 
+# TODO
+# http://blog.rubybestpractices.com/posts/gregory/059-issue-25-creational-design-patterns.html
+# Multiton Pattern
+
 module Rings
   class WaitingQueue
     extend Forwardable

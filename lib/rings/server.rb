@@ -19,6 +19,7 @@ module Rings
     def with_connected_socket(client_socket, &block)
       @connected_clients.push client_socket
       block.call
+    ensure
       @connected_clients.delete client_socket
     end
 

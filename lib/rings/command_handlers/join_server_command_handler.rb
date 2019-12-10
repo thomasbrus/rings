@@ -20,7 +20,7 @@ module Rings
 
       def handle_command
         if server.nickname_taken? arguments(:nickname)
-          raise CommandError, %Q[Nickname "#{arguments(:nickname)}" is already taken.]
+          raise CommandError, %[Nickname "#{arguments(:nickname)}" is already taken.]
         end
 
         @session.join_server!

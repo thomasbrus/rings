@@ -23,15 +23,7 @@ module Rings
       end
     end
 
-    def self.create_arsenal(color, shared_color = nil)
-      if shared_color
-        arsenal(color) + shared_arsenal(shared_color)
-      else
-        arsenal(color)
-      end
-    end
-
-    def self.arsenal(color)
+    def self.create_arsenal(color)
       [ Rings::Pieces::LargeSolidPiece.new(color),
         Rings::Pieces::LargeRingPiece.new(color),
         Rings::Pieces::MediumRingPiece.new(color),
@@ -40,17 +32,15 @@ module Rings
       ] * 3
     end
 
-    private_class_method :arsenal
-
-    def self.shared_arsenal(shared_color)
-      [ Rings::Pieces::LargeSolidPiece.new(shared_color),
+    # TODO: Improve method name.
+    def self.create_shared_arsenal(color, shared_color)
+      create_arsenal(color) + [
+        Rings::Pieces::LargeSolidPiece.new(shared_color),
         Rings::Pieces::LargeRingPiece.new(shared_color),
         Rings::Pieces::MediumRingPiece.new(shared_color),
         Rings::Pieces::SmallRingPiece.new(shared_color),
         Rings::Pieces::ExtraSmallRingPiece.new(shared_color)
       ]
     end
-
-    private_class_method :shared_arsenal
   end
 end

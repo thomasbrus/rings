@@ -68,7 +68,7 @@ describe PiecesFactory do
     end
 
     context "when creating an arsenal of red and yellow pieces" do
-      let(:arsenal) { PiecesFactory.create_arsenal(:red, :yellow) }
+      let(:arsenal) { PiecesFactory.create_shared_arsenal(:red, :yellow) }
 
       it "includes three red pieces of each type and a yellow piece of each type" do
         arsenal.should =~ [

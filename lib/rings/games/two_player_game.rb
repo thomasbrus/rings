@@ -12,23 +12,21 @@ module Rings
       private
 
       def assign_arsenal_to_players
-        @players[0].arsenal = [
-          *PiecesFactory.create_arsenal(Piece::ALLOWED_COLORS[0]),
-          *PiecesFactory.create_arsenal(Piece::ALLOWED_COLORS[1]),
-        ]
+        @players[0].arsenal =
+          PiecesFactory.create_arsenal(Piece::ALLOWED_COLORS[0]) +
+          PiecesFactory.create_arsenal(Piece::ALLOWED_COLORS[1])
 
-        @players[1].arsenal = [
-          *PiecesFactory.create_arsenal(Piece::ALLOWED_COLORS[2]),
-          *PiecesFactory.create_arsenal(Piece::ALLOWED_COLORS[3]),
-        ]
+        @players[1].arsenal =
+          PiecesFactory.create_arsenal(Piece::ALLOWED_COLORS[2]) +
+          PiecesFactory.create_arsenal(Piece::ALLOWED_COLORS[3])
       end
     end
 
     def find_player_by_color(color)
       case color
-      when Piece::ALLOWED_COLORS[0], Piece::ALLOWED_COLORS[1]
+      when Piece::ALLOWED_COLORS[0, 1]
         @players[0]
-      when Piece::ALLOWED_COLORS[2], Piece::ALLOWED_COLORS[3]
+      when Piece::ALLOWED_COLORS[2, 3]
         @players[1]
       end
     end

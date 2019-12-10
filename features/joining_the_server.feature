@@ -17,8 +17,8 @@ Feature: Joining the server
     When I use the nickname "thomasbrus"
     Then I should receive a message which indicates that the nickname "thomasbrus" is already taken
 
-  Scenario: Joining the server twice
-    Given I have joined the server using the nickname "thomasbrus"
-    When I use the nickname "superman"
-    Then I should receive an error message
+  # Scenario: Joining the server twice
+  #   Given I have joined the server using the nickname "thomasbrus"
+  #   When I use the nickname "superman"
+  #   Then I should receive an error message
 
