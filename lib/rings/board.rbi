@@ -1,6 +1,7 @@
 class Rings::Board
-  @fields: any
+  @fields: Matrix
   def initialize: () -> void
+  def each_field: { (Rings::Field) -> any } -> any
   def place: (Rings::Piece, Integer, Integer) -> void
   def can_place?: (Rings::Piece, Integer, Integer) -> bool
   def has_piece_of_color?: (Symbol, Integer, Integer) -> bool

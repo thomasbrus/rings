@@ -1,26 +1,23 @@
 require 'matrix'
 require 'forwardable'
-
 require 'rings/field'
 require 'rings/pieces/extra_small_ring_piece'
 require 'rings/pieces/large_ring_piece'
 require 'rings/pieces/large_solid_piece'
 require 'rings/pieces/medium_ring_piece'
 require 'rings/pieces/small_ring_piece'
-
 require 'colored'
-
-include Rings::Pieces
 
 module Rings
   class Board
-    extend Forwardable
-    def_delegator :@fields, :each, :each_field
-
     SIZE = 5
 
     def initialize
       @fields = Matrix.build(SIZE, SIZE) { |x, y| Field.new x, y }
+    end
+
+    def each_field(&blk)
+      @fields.each(&blk)
     end
 
     def place(piece, x, y)
@@ -43,8 +40,6 @@ module Rings
     def has_adjacent_piece_of_color?(color, x, y)
       adjacent_fields(x, y).any? { |f| f.has_piece_of_color?(color) }
     end
-
-    private
 
     def adjacent_fields(x, y)
       @fields.select do |field|

@@ -66,25 +66,5 @@ describe PiecesFactory do
         ] * 3
       end
     end
-
-    context "when creating an arsenal of red and yellow pieces" do
-      let(:arsenal) { PiecesFactory.create_arsenal(:red, :yellow) }
-
-      it "includes three red pieces of each type and a yellow piece of each type" do
-        arsenal.should =~ [
-          Rings::Pieces::LargeSolidPiece.new(:red),
-          Rings::Pieces::LargeRingPiece.new(:red),
-          Rings::Pieces::MediumRingPiece.new(:red),
-          Rings::Pieces::SmallRingPiece.new(:red),
-          Rings::Pieces::ExtraSmallRingPiece.new(:red)
-        ] * 3 + [
-          Rings::Pieces::LargeSolidPiece.new(:yellow),
-          Rings::Pieces::LargeRingPiece.new(:yellow),
-          Rings::Pieces::MediumRingPiece.new(:yellow),
-          Rings::Pieces::SmallRingPiece.new(:yellow),
-          Rings::Pieces::ExtraSmallRingPiece.new(:yellow)
-        ]
-      end
-    end
   end
 end
