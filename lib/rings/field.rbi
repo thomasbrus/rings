@@ -1,6 +1,6 @@
 class Rings::Field
-  @x: Integer
-  @y: Integer
+  attr_reader x: Integer
+  attr_reader y: Integer
   @pieces: Set<Rings::Piece>
   def initialize: (Integer, Integer) -> void
   def place: (Rings::Piece) -> void

@@ -1,6 +1,5 @@
 class Rings::Piece
-  @color: Symbol
-  def color: () -> Symbol
+  attr_reader color: Symbol
   def initialize: (Symbol) -> void
   def solid?: () -> bool
   def size: () -> Symbol
